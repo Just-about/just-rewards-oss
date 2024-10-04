@@ -1,0 +1,1 @@
+export { ShadowDOMNotification } from "./ShadowDOMNotification";

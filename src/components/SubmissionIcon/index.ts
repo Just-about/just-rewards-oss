@@ -1,0 +1,1 @@
+export { SubmissionIcon } from "./SubmissionIcon";
