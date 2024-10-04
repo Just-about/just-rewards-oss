@@ -1,6 +1,6 @@
 # Just Rewards ◢◢
 
-Welcome to Just Rewards, a feature of [Just About](https://justabout.com) that makes earning rewards even easier.
+Welcome to Just Rewards, an extension of [Just About](https://justabout.com) that makes earnings rewards even easier.
 
 ## Purpose
 
