@@ -1,0 +1,3 @@
+setup:
+  project: just-rewards
+  config: dev

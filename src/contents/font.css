@@ -1,0 +1,50 @@
+/*
+ * These Plaso IDs are automatically added to the highest level
+ * div on both the extension and shadow-DOM so we can use them
+ * to target all children and avoid injecting styles into the
+ * page global scope.
+ */
+#__plasmo *,
+#plasmo-shadow-container * {
+  box-sizing: border-box !important;
+}
+
+@font-face {
+  font-family: "Poppins";
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url(data-base64:~assets/fonts/Poppins-Regular.ttf) format("truetype");
+}
+
+@font-face {
+  font-family: "Poppins";
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: url(data-base64:~assets/fonts/Poppins-SemiBold.ttf) format("truetype");
+}
+
+@font-face {
+  font-family: "Poppins";
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url(data-base64:~assets/fonts/Poppins-Bold.ttf) format("truetype");
+}
+
+@font-face {
+  font-family: "SourceSans3";
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url(data-base64:~assets/fonts/SourceSans3.ttf) format("truetype");
+}
+
+@font-face {
+  font-family: "SourceCode";
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url(data-base64:~assets/fonts/SourceCode.ttf) format("truetype");
+}

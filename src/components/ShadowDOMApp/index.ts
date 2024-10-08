@@ -1,0 +1,1 @@
+export { ShadowDOMApp } from "./ShadowDOMApp";
