@@ -160,12 +160,17 @@ export const ShadowDOMNotification = ({
     setStoredData(STORAGE_KEYS.DISMISSED_NOTIFICATION, newDismissalData);
   }, [setIsDismissedForURL, dismissalData, triggerURLs]);
 
-  const handleDismissNotificationClick = useCallback(() => {
-    Tracking.trackEvent(EventType.BUTTON_CLICKED, {
-      location: "notification-dismissed",
+  const handleDismissNotificationClick = useCallback(async () => {
+    await Tracking.trackEvent({
+      callback: () => {
+        setDismissed();
+        hide();
+      },
+      eventType: EventType.BUTTON_CLICKED,
+      eventProperties: {
+        location: "notification-dismissed",
+      },
     });
-    setDismissed();
-    hide();
   }, [hide, setDismissed]);
 
   // Update the bounties & count in the app/badge whenever the bountyIDs change
@@ -195,11 +200,6 @@ export const ShadowDOMNotification = ({
     setup();
   }, [currentURL, loadData, setIsLoading]);
 
-  // Capture the fact that the notification opened, only once on mount
-  useEffect(() => {
-    Tracking.trackEvent(EventType.REWARDS_NOTIFICATIONS_TRIGGERED, {});
-  }, []);
-
   const doNotDisplay = useMemo(
     // Disabling ESlint to make it easy to comment out env check for testing
     /* eslint-disable */
@@ -217,6 +217,16 @@ export const ShadowDOMNotification = ({
     /* eslint-enable */
     [isLoading, bountyIDs, isHidden, isDismissedForURL]
   );
+
+  // Capture the fact that the notification opened, only once on mount
+  useEffect(() => {
+    if (doNotDisplay) return;
+
+    Tracking.trackEvent({
+      eventType: EventType.REWARDS_NOTIFICATIONS_TRIGGERED,
+      eventProperties: {},
+    });
+  }, [doNotDisplay]);
 
   useEffect(() => () => stopTimer(), [stopTimer]);
 

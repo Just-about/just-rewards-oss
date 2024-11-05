@@ -114,25 +114,31 @@ export const UserInfo = ({ className }: UserInfoProps) => {
   }, [isMixpanelSetupComplete, user]);
 
   const handleViewEarnings = useCallback(async () => {
-    await Tracking.scheduleTrack(EventType.BUTTON_CLICKED, {
-      location: "balance",
+    await Tracking.trackEvent({
+      callback: () =>
+        router.openExternalUrl(
+          `${process.env.PLASMO_PUBLIC_SITE_URL}/activity/earnings`
+        ),
+      eventType: EventType.BUTTON_CLICKED,
+      eventProperties: {
+        location: "balance",
+      },
     });
-
-    router.openExternalUrl(
-      `${process.env.PLASMO_PUBLIC_SITE_URL}/activity/earnings`
-    );
   }, [router]);
 
   const handleViewProfile = useCallback(async () => {
     if (!user) return;
 
-    await Tracking.scheduleTrack(EventType.BUTTON_CLICKED, {
-      location: "profile",
+    await Tracking.trackEvent({
+      callback: () =>
+        router.openExternalUrl(
+          `${process.env.PLASMO_PUBLIC_SITE_URL}/user/${user.username}`
+        ),
+      eventType: EventType.BUTTON_CLICKED,
+      eventProperties: {
+        location: "profile",
+      },
     });
-
-    router.openExternalUrl(
-      `${process.env.PLASMO_PUBLIC_SITE_URL}/user/${user.username}`
-    );
   }, [router, user]);
 
   const wrapperClassName = useMemo(

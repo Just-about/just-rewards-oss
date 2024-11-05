@@ -115,10 +115,10 @@ const ShadowDOM = () => {
 
       setViewState("app");
 
-      Tracking.trackEvent(
-        EventType.REWARDS_NOTIFICATION_VIEW_REWARDS_BUTTON_CLICKED,
-        {}
-      );
+      Tracking.trackEvent({
+        eventType: EventType.REWARDS_NOTIFICATION_VIEW_REWARDS_BUTTON_CLICKED,
+        eventProperties: {},
+      });
 
       if (bountyIDs.length > 1) {
         router.push(`/bounties/list/${bountyIDs.join(",")}`);

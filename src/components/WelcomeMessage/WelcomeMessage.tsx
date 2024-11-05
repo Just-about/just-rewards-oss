@@ -11,13 +11,16 @@ export const WelcomeMessage = () => {
   const router = useRouter();
 
   const handleViewAllRewards = useCallback(async () => {
-    await Tracking.scheduleTrack(EventType.BUTTON_CLICKED, {
-      location: "view-all-rewards",
+    await Tracking.trackEvent({
+      callback: () =>
+        router.openExternalUrl(
+          "https://justabout.com/?tag=bounty&tag=platform-rewards"
+        ),
+      eventType: EventType.BUTTON_CLICKED,
+      eventProperties: {
+        location: "view-all-rewards",
+      },
     });
-
-    router.openExternalUrl(
-      "https://justabout.com/?tag=bounty&tag=platform-rewards"
-    );
   }, [router]);
 
   return (

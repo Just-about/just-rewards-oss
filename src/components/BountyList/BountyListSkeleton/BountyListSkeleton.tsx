@@ -17,6 +17,8 @@ export const BountyListSkeleton = ({ rows }: { rows?: number }) => {
         return (
           <div
             className="flex flex-row h-[44px] items-center"
+            // eslint-disable-next-line react/no-array-index-key
+            key={`bounty-list-skeleton-${idx}`}
             style={{
               // Progressively make the list items opaque
               opacity: 1 - idx / count,

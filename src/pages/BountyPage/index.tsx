@@ -46,11 +46,13 @@ export const BountyPage = ({ bountyID }: BountyPageProps) => {
   const handleOpenRules = useCallback(async () => {
     if (!bounty) return;
 
-    await Tracking.scheduleTrack(EventType.BUTTON_CLICKED, {
-      location: "view-rules",
+    await Tracking.trackEvent({
+      callback: () => router.openExternalUrl(bounty.url),
+      eventType: EventType.BUTTON_CLICKED,
+      eventProperties: {
+        location: "view-rules",
+      },
     });
-
-    router.openExternalUrl(bounty.url);
   }, [router, bounty?.url]);
 
   // TODO: add loading state
@@ -111,15 +113,17 @@ export const BountyPage = ({ bountyID }: BountyPageProps) => {
           className="relative mx-5"
           style={{ zIndex: Z_INDEXES.JRX_BOUNTY_PAGE_CONTENT }}
         >
-          <h1 className="text-white font-['Poppins'] font-bold text-xl mb-1">
+          <div className="mb-1">
             {isLoading ? (
               <Skeleton className="h-8 w-40" />
             ) : (
-              <span className="fade-in-animation">{bounty!.title}</span>
+              <span className="text-white font-['Poppins'] font-bold text-xl fade-in-animation">
+                {bounty!.title}
+              </span>
             )}
-          </h1>
+          </div>
 
-          <p className="text-white font-['SourceSans3'] !leading-[22px] text-md mb-2">
+          <div className="mb-2">
             {isLoading ? (
               <div className="flex flex-col gap-1">
                 <Skeleton className="h-[20px] w-full" />
@@ -130,25 +134,34 @@ export const BountyPage = ({ bountyID }: BountyPageProps) => {
                 <Skeleton className="h-[20px] w-56" />
               </div>
             ) : (
-              <span className="fade-in-animation">{bounty?.description}</span>
+              <span className="text-white font-['SourceSans3'] !leading-[22px] text-md fade-in-animation">
+                {bounty?.description}
+              </span>
             )}
-          </p>
+          </div>
 
-          <p className="text-white/60 text-sm font-['SourceSans3'] mb-4">
+          <div className=" mb-4">
             {isLoading ? (
               <Skeleton className="h-[20px] w-20" />
             ) : (
-              <span className="fade-in-animation">
+              <span className="text-white/60 text-sm font-['SourceSans3'] fade-in-animation">
                 In {bounty?.community?.name}
               </span>
             )}
-          </p>
+          </div>
 
           {bounty && (
             <div className="flex row gap-2 fade-in-animation">
               <Button
                 color="purple"
-                href={`${bounty?.url}?referrer=jrx`}
+                onClick={() => {
+                  Tracking.trackEvent({
+                    callback: () =>
+                      router.openExternalUrl(`${bounty.url}?referrer=jrx`),
+                    eventType: EventType.BOUNTY_SUBMISSION_INTENT_STARTED,
+                    eventProperties: {},
+                  });
+                }}
                 size="sm"
                 iconLeft={CircleRightArrowSolid}
               >

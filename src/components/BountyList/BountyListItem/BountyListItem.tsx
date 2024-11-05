@@ -31,10 +31,12 @@ export const BountyListItem = ({
 }: BountyListItemProps) => {
   const router = useRouter();
 
-  const handleClick = useCallback(() => {
-    Tracking.trackEvent(EventType.CLICKED_BOUNTY_DETAIL_FROM_LIST_VIEW, {});
-
-    router.push(`/bounties/${id}`);
+  const handleClick = useCallback(async () => {
+    await Tracking.trackEvent({
+      callback: () => router.push(`/bounties/${id}`),
+      eventType: EventType.CLICKED_BOUNTY_DETAIL_FROM_LIST_VIEW,
+      eventProperties: {},
+    });
   }, [router, id]);
 
   const reward = useMemo(

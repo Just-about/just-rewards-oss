@@ -18,11 +18,16 @@ export const Header = ({ onClose }: HeaderProps) => {
   const router = useRouter();
 
   const handleClickNotifications = useCallback(async () => {
-    await Tracking.scheduleTrack(EventType.BUTTON_CLICKED, {
-      location: "notifications",
+    await Tracking.trackEvent({
+      callback: () =>
+        router.openExternalUrl(
+          `${process.env.PLASMO_PUBLIC_SITE_URL}/activity`
+        ),
+      eventType: EventType.BUTTON_CLICKED,
+      eventProperties: {
+        location: "notifications",
+      },
     });
-
-    router.openExternalUrl(`${process.env.PLASMO_PUBLIC_SITE_URL}/activity`);
   }, [router]);
 
   return (

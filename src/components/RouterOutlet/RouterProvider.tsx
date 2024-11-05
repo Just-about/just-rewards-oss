@@ -53,7 +53,7 @@ export const RouterProvider = ({
   );
 
   const openExternalUrl = useCallback(
-    (url: string) => window.open(`${url}?referrer=jrx`),
+    (url: string) => window.open(`${url}?referrer=jrx`, "_blank"),
     [window]
   );
 

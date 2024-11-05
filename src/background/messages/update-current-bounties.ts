@@ -39,7 +39,7 @@ const handler: PlasmoMessaging.MessageHandler<
 
   const tabId = await chrome.tabs
     .query({ active: true, currentWindow: true })
-    .then((r) => r[0].id);
+    .then((r) => (r.length > 0 ? r[0].id : undefined));
 
   if (tabId) {
     // set notification badge

@@ -14,7 +14,9 @@
   font-style: normal;
   font-weight: 400;
   font-display: swap;
-  src: url(data-base64:~assets/fonts/Poppins-Regular.ttf) format("truetype");
+  src: url(data-base64:~assets/fonts/Poppins-Regular.ttf) format("truetype"),
+    local("Century Gothic"), local("Apple Gothic"), local("Helvetica Neue"),
+    local("Helvetica"), local("Arial"), local("sans-serif");
 }
 
 @font-face {
@@ -22,7 +24,9 @@
   font-style: normal;
   font-weight: 600;
   font-display: swap;
-  src: url(data-base64:~assets/fonts/Poppins-SemiBold.ttf) format("truetype");
+  src: url(data-base64:~assets/fonts/Poppins-SemiBold.ttf) format("truetype"),
+    local("Century Gothic"), local("Apple Gothic"), local("Helvetica Neue"),
+    local("Helvetica"), local("Arial"), local("sans-serif");
 }
 
 @font-face {
@@ -30,7 +34,9 @@
   font-style: normal;
   font-weight: 700;
   font-display: swap;
-  src: url(data-base64:~assets/fonts/Poppins-Bold.ttf) format("truetype");
+  src: url(data-base64:~assets/fonts/Poppins-Bold.ttf) format("truetype"),
+    local("Century Gothic"), local("Apple Gothic"), local("Helvetica Neue"),
+    local("Helvetica"), local("Arial"), local("sans-serif");
 }
 
 @font-face {
@@ -38,7 +44,9 @@
   font-style: normal;
   font-weight: 400;
   font-display: swap;
-  src: url(data-base64:~assets/fonts/SourceSans3.ttf) format("truetype");
+  src: url(data-base64:~assets/fonts/SourceSans3.ttf) format("truetype"),
+    local("Tahoma"), local("Helvetica Neue"),
+    local("Helvetica"), local("Arial"), local("sans-serif");
 }
 
 @font-face {
@@ -46,5 +54,7 @@
   font-style: normal;
   font-weight: 400;
   font-display: swap;
-  src: url(data-base64:~assets/fonts/SourceCode.ttf) format("truetype");
+  src: url(data-base64:~assets/fonts/SourceCode.ttf) format("truetype"),
+    local("Tahoma"), local("Helvetica Neue"),
+    local("Helvetica"), local("Arial"), local("sans-serif");
 }

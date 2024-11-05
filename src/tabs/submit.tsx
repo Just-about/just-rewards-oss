@@ -47,10 +47,10 @@ const Submit = () => {
   }
 
   const handleSubmitClick = useCallback(async () => {
-    await Tracking.scheduleTrack(
-      EventType.BOUNTY_SUBMISSION_INTENT_STARTED,
-      {}
-    );
+    await Tracking.trackEvent({
+      eventType: EventType.BOUNTY_SUBMISSION_INTENT_STARTED,
+      eventProperties: {},
+    });
 
     setIsSuccess(true);
   }, []);
