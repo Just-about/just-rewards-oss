@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 
 import { CircleRightArrowSolid } from "@ja-packages/icons/solid/CircleRightArrow";
 import { formatCurrency } from "@ja-packages/utils/format";
@@ -23,18 +23,26 @@ interface BountyPageProps {
   bountyID: string;
 }
 
+// FIXME: The `get-bounty` background message serializes the response, converting
+// the date into a string. As a temporary workaround we're using this type to ensure
+// that the `deadline` is treated as a string
+// See https://app.asana.com/0/1204213772348254/1208714598988140
+type ParsedJrxBounty = Omit<JrxBounty, "deadline"> & {
+  deadline: string | null;
+};
+
 export const BountyPage = ({ bountyID }: BountyPageProps) => {
   const router = useRouter();
   const [isError, setIsError] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState<boolean>(true);
-  const [bounty, setBounty] = useState<JrxBounty | null>();
+  const [bounty, setBounty] = useState<ParsedJrxBounty>();
 
   const loadBounty = useCallback(async () => {
     setIsError(false);
     setIsLoading(true);
 
     getBounty(Number(bountyID))
-      .then((data) => setBounty(data))
+      .then((data) => setBounty(data as ParsedJrxBounty))
       .catch(() => setIsError(true))
       .finally(() => setIsLoading(false));
   }, [setIsError, setIsLoading, setBounty]);
@@ -42,6 +50,17 @@ export const BountyPage = ({ bountyID }: BountyPageProps) => {
   useEffect(() => {
     loadBounty();
   }, [loadBounty]);
+
+  const deadline = useMemo(() => {
+    if (!bounty?.deadline) return "";
+    const bountyDeadline = new Date(bounty.deadline);
+    const year = bountyDeadline.getFullYear();
+    const month = bountyDeadline.getMonth() + 1;
+    const day = bountyDeadline.getDate();
+    const hour = bountyDeadline.getHours();
+    const minute = `${bountyDeadline.getMinutes()}`.padStart(2, "0");
+    return `${hour}:${minute} ${day}/${month}/${year}`;
+  }, [bounty]);
 
   const handleOpenRules = useCallback(async () => {
     if (!bounty) return;
@@ -145,7 +164,8 @@ export const BountyPage = ({ bountyID }: BountyPageProps) => {
               <Skeleton className="h-[20px] w-20" />
             ) : (
               <span className="text-white/60 text-sm font-['SourceSans3'] fade-in-animation">
-                In {bounty?.community?.name}
+                In {bounty?.community?.name}{" "}
+                {deadline ? `| Closes ${deadline}` : ""}
               </span>
             )}
           </div>

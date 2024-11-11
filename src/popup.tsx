@@ -5,6 +5,8 @@ import { getAppRouteEntrypoint } from "~components/App/getAppRouteEntrypoint";
 import { LoadingSpinner } from "~components/LoadingSpinner/LoadingSpinner";
 import { RouterProvider } from "~components/RouterOutlet";
 import { ROUTES } from "~components/routes";
+import { Tracking } from "~mixpanel";
+import { EventType } from "~mixpanel/events";
 import { updateCurrentBounties } from "~utils/update-current-bounties";
 
 import "./style.css";
@@ -43,6 +45,13 @@ const ExtensionPopup = () => {
     if (!entrypoint) return;
     updateCurrentBounties();
   }, [entrypoint]);
+
+  useEffect(() => {
+    Tracking.trackEvent({
+      eventType: EventType.EXTENSION_OPENED_VIA_TOOLBAR,
+      eventProperties: {},
+    });
+  }, []);
 
   if (!entrypoint)
     return (

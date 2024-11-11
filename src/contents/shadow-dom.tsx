@@ -87,6 +87,8 @@ const ShadowDOM = () => {
   const [currentURL, setCurrentURL] = useState<string | null>(null);
   const currentURLRef = useRef<string | null>(null);
 
+  const domain = currentURL ? new URL(currentURL).hostname : "";
+
   const locationCheckTimer = useRef<SetInterval>(undefined);
 
   // Location change listeners are not well covered across browsers. Rather than have some browsers work
@@ -117,7 +119,9 @@ const ShadowDOM = () => {
 
       Tracking.trackEvent({
         eventType: EventType.REWARDS_NOTIFICATION_VIEW_REWARDS_BUTTON_CLICKED,
-        eventProperties: {},
+        eventProperties: {
+          domain,
+        },
       });
 
       if (bountyIDs.length > 1) {
@@ -129,7 +133,7 @@ const ShadowDOM = () => {
       }
     },
 
-    [router]
+    [router, domain]
   );
 
   if (isShadowDOMHidden || isPopupOpen) return null;

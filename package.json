@@ -1,7 +1,7 @@
 {
   "name": "just-rewards",
   "displayName": "Just Rewards",
-  "version": "0.0.9",
+  "version": "1.1.1",
   "description": "Just Rewards",
   "author": "justabout.com",
   "scripts": {},
@@ -22,10 +22,10 @@
     "@types/route-parser": "^0.1.7",
     "classnames": "^2.5.1",
     "mixpanel-browser": "^2.55.1",
-    "plasmo": "0.88.0",
+    "plasmo": "^0.89.3",
     "puppeteer": "^22.15.0",
-    "react": "^18.2.0",
-    "react-dom": "^18.2.0",
+    "react": "18.3.1",
+    "react-dom": "18.3.1",
     "react-error-boundary": "^4.0.13",
     "route-parser": "^0.0.5"
   },

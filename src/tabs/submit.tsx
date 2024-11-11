@@ -60,7 +60,7 @@ const Submit = () => {
       {!isSuccess ? (
         <div>
           <h2 className="text-[24px] font-semibold font-['Poppins'] mb-1.5">
-            Submit to this bounty
+            Submit to this reward
           </h2>
           <p className="font-['SourceSans3'] text-[16px] leading-[120%] mb-1">
             Top-level task description in no more than 120 characters

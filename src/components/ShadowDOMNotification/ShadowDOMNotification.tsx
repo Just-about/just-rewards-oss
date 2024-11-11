@@ -9,11 +9,9 @@ import { HIDE_FADE_OUT_DURATION } from "~components/consts";
 import { Tracking } from "~mixpanel";
 import { EventType } from "~mixpanel/events";
 import { listBounties } from "~utils/fetchers/list-bounties";
-import { listTriggerUrls } from "~utils/fetchers/list-trigger-urls";
 import { STORAGE_KEYS, setStoredData, getStoredData } from "~utils/storage";
 import { updateCurrentBounties } from "~utils/update-current-bounties";
 
-import type { JrxTriggerUrl } from "@ja-packages/types/jarb";
 import type { SetInterval } from "@ja-packages/utils/timer";
 
 const NOTIFICATION_LIFETIME_SECONDS = 9;
@@ -26,7 +24,7 @@ const getDismissalExpiration = () => {
   return expiration;
 };
 
-type DismissalData = { [id: number]: Date };
+type DismissalData = { [url: string]: Date };
 
 enum AnimationState {
   Hiding = "hiding",
@@ -44,7 +42,6 @@ export const ShadowDOMNotification = ({
 }: ShadowDOMNotificationProps) => {
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [bountyIDs, setBountyIDs] = useState<number[]>([]);
-  const [triggerURLs, setTriggerURLs] = useState<JrxTriggerUrl[]>([]);
   const [dismissalData, setDismissalData] = useState<DismissalData | null>(
     null
   );
@@ -58,13 +55,18 @@ export const ShadowDOMNotification = ({
 
   const [isHidden, setIsHidden] = useState(true);
 
-  // If the user has hit "Dismiss" then that dismissal will be remembered for all URLs associated with
-  // bounties that appear on this page. Dismissed URLs will not be displayed.
+  // If the user has hit "Dismiss" then that dismissal will be remembered for all URLs that fall
+  // under that domain
   const [isDismissedForURL, setIsDismissedForURL] = useState(false);
 
   // How long the notification has left until it hides
   const [lifetime, setLifetime] = useState(NOTIFICATION_LIFETIME_SECONDS);
   const lifetimeRef = useRef(NOTIFICATION_LIFETIME_SECONDS);
+
+  const domain = useMemo(
+    () => (currentURL ? new URL(currentURL).hostname : ""),
+    [currentURL]
+  );
 
   const countdownInterval = useRef<SetInterval>(undefined);
 
@@ -108,24 +110,23 @@ export const ShadowDOMNotification = ({
       setBountyIDs(ids);
       setDismissalData(dismissals || {});
 
-      if (!ids.length) {
-        setTriggerURLs([]);
-      } else {
+      if (ids.length) {
         await updateCurrentBounties({ ids });
-        const urls = await listTriggerUrls({ bountyIDs: ids });
-        setTriggerURLs(urls);
-        const urlIDs = urls.map((u) => u.id);
-        const isDismissed = Object.entries(dismissals || {}).some(
-          ([id, timeout]) =>
-            urlIDs.includes(Number(id)) && new Date() < new Date(timeout)
-        );
+
+        const isDismissed = (() => {
+          if (!dismissals) return false;
+          if (!domain) return false;
+          const timeout = dismissals[domain];
+          return timeout && new Date() < new Date(timeout);
+        })();
+
         setAnimationState(AnimationState.Showing);
         setIsHidden(false);
         setIsDismissedForURL(isDismissed);
         startTimer();
       }
     },
-    [setBountyIDs, setTriggerURLs, setDismissalData, setIsDismissedForURL]
+    [setBountyIDs, setDismissalData, setIsDismissedForURL, domain]
   );
 
   const notifyChangeInCurrentBounties = useCallback(
@@ -150,15 +151,14 @@ export const ShadowDOMNotification = ({
 
   const setDismissed = useCallback(() => {
     setIsDismissedForURL(true);
+    if (!domain) return;
     const expiration = getDismissalExpiration();
     const newDismissalData = {
       ...dismissalData,
-      ...Object.fromEntries(
-        triggerURLs.map((triggerURL) => [triggerURL.id, expiration])
-      ),
+      [domain]: expiration,
     };
     setStoredData(STORAGE_KEYS.DISMISSED_NOTIFICATION, newDismissalData);
-  }, [setIsDismissedForURL, dismissalData, triggerURLs]);
+  }, [setIsDismissedForURL, dismissalData, domain]);
 
   const handleDismissNotificationClick = useCallback(async () => {
     await Tracking.trackEvent({
@@ -169,9 +169,10 @@ export const ShadowDOMNotification = ({
       eventType: EventType.BUTTON_CLICKED,
       eventProperties: {
         location: "notification-dismissed",
+        domain,
       },
     });
-  }, [hide, setDismissed]);
+  }, [hide, setDismissed, domain]);
 
   // Update the bounties & count in the app/badge whenever the bountyIDs change
   useEffect(() => {
@@ -208,11 +209,14 @@ export const ShadowDOMNotification = ({
         isLoading ||
         isHidden ||
         bountyIDs.length === 0 ||
+        // Please do not refactor the lines below!
+        //They are on the line below to make it easy to comment out!
         (
           isDismissedForURL
+          // DO NOT MOVE THE AMPERSANDS!!
           && process.env.NODE_ENV === "production"
         )
-      )
+      );
     },
     /* eslint-enable */
     [isLoading, bountyIDs, isHidden, isDismissedForURL]
@@ -224,9 +228,11 @@ export const ShadowDOMNotification = ({
 
     Tracking.trackEvent({
       eventType: EventType.REWARDS_NOTIFICATIONS_TRIGGERED,
-      eventProperties: {},
+      eventProperties: {
+        domain,
+      },
     });
-  }, [doNotDisplay]);
+  }, [doNotDisplay, domain]);
 
   useEffect(() => () => stopTimer(), [stopTimer]);
 
