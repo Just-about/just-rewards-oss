@@ -15,7 +15,7 @@ import { updateCurrentBounties } from "~utils/update-current-bounties";
 import type { SetInterval } from "@ja-packages/utils/timer";
 
 const NOTIFICATION_LIFETIME_SECONDS = 9;
-const DISMISSAL_TIMEOUT_MINUTES = 5;
+const DISMISSAL_TIMEOUT_MINUTES = 24 * 60;
 const DISMISSAL_TIMEOUT = DISMISSAL_TIMEOUT_MINUTES * 60 * 1000;
 
 const getDismissalExpiration = () => {
