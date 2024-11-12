@@ -6,11 +6,11 @@ import { ImageIconSolid } from "@ja-packages/icons/solid/Image";
 import { LinkIconSolid } from "@ja-packages/icons/solid/Link";
 import { QuoteIconSolid } from "@ja-packages/icons/solid/Quote";
 import { formatCurrency } from "@ja-packages/utils/format";
+import { EventType } from "@ja-packages/utils/mixpanel";
 
 import { useRouter } from "~components/RouterOutlet";
 import { SubmissionIcon } from "~components/SubmissionIcon";
 import { Tracking } from "~mixpanel";
-import { EventType } from "~mixpanel/events";
 
 export interface BountyListItemProps {
   communityName: string;
@@ -32,11 +32,11 @@ export const BountyListItem = ({
   const router = useRouter();
 
   const handleClick = useCallback(async () => {
-    await Tracking.trackEvent({
-      callback: () => router.push(`/bounties/${id}`),
+    await Tracking.trackEventInBackground({
       eventType: EventType.CLICKED_BOUNTY_DETAIL_FROM_LIST_VIEW,
       eventProperties: {},
     });
+    router.push(`/bounties/${id}`);
   }, [router, id]);
 
   const reward = useMemo(

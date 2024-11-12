@@ -3,13 +3,13 @@ import { useCallback, useEffect, useMemo, useState } from "react";
 
 import { CircleRightArrowSolid } from "@ja-packages/icons/solid/CircleRightArrow";
 import { formatCurrency } from "@ja-packages/utils/format";
+import { EventType } from "@ja-packages/utils/mixpanel";
 import { convertStringToPrettyHexcode } from "@ja-packages/utils/string-to-color";
 
 import { Button } from "~components/Button";
 import { useRouter } from "~components/RouterOutlet";
 import { Skeleton } from "~components/Skeleton/Skeleton";
 import { Tracking } from "~mixpanel";
-import { EventType } from "~mixpanel/events";
 import { getBalance, getUser } from "~utils/fetchers";
 import { STORAGE_KEYS, getStoredData, setStoredData } from "~utils/storage";
 
@@ -114,31 +114,29 @@ export const UserInfo = ({ className }: UserInfoProps) => {
   }, [isMixpanelSetupComplete, user]);
 
   const handleViewEarnings = useCallback(async () => {
-    await Tracking.trackEvent({
-      callback: () =>
-        router.openExternalUrl(
-          `${process.env.PLASMO_PUBLIC_SITE_URL}/activity/earnings`
-        ),
+    await Tracking.trackEventInBackground({
       eventType: EventType.BUTTON_CLICKED,
       eventProperties: {
         location: "balance",
       },
     });
+    router.openExternalUrl(
+      `${process.env.PLASMO_PUBLIC_SITE_URL}/activity/earnings`
+    );
   }, [router]);
 
   const handleViewProfile = useCallback(async () => {
     if (!user) return;
 
-    await Tracking.trackEvent({
-      callback: () =>
-        router.openExternalUrl(
-          `${process.env.PLASMO_PUBLIC_SITE_URL}/user/${user.username}`
-        ),
+    await Tracking.trackEventInBackground({
       eventType: EventType.BUTTON_CLICKED,
       eventProperties: {
         location: "profile",
       },
     });
+    router.openExternalUrl(
+      `${process.env.PLASMO_PUBLIC_SITE_URL}/user/${user.username}`
+    );
   }, [router, user]);
 
   const wrapperClassName = useMemo(

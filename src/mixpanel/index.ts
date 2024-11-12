@@ -1,10 +1,15 @@
 import mixpanel from "mixpanel-browser";
 
 import { UserType } from "@ja-packages/types";
+import { EventPropertiesMap, EventType } from "@ja-packages/utils/mixpanel";
 
+import {
+  TrackMixpanelEventRequest,
+  TrackMixpanelEventResponse,
+} from "~background/messages/track-mixpanel-event";
+import { backgroundMessage } from "~utils/messages/background-message";
 import { getStoredData, STORAGE_KEYS } from "~utils/storage";
 
-import { EventPropertiesMap, EventType } from "./events";
 import { MixpanelTrackIdentifyUser } from "./types";
 
 const mixpanelToken = process.env.PLASMO_PUBLIC_MIXPANEL_TOKEN;
@@ -39,11 +44,9 @@ export const Tracking = {
     });
   },
   trackEvent: async <T extends EventType>({
-    callback,
     eventType,
     eventProperties,
   }: {
-    callback?: () => void;
     eventType: T;
     eventProperties: EventPropertiesMap[T];
   }) => {
@@ -52,13 +55,22 @@ export const Tracking = {
     const user = await getStoredData<UserType>(STORAGE_KEYS.USER_DATA);
     if (user?.staff) return;
 
-    mixpanel.track(
-      `JRX: ${eventType}`,
-      eventProperties,
-      {
-        send_immediately: true,
-      },
-      callback
-    );
+    mixpanel.track(`JRX: ${eventType}`, eventProperties, {
+      send_immediately: true,
+    });
   },
+  trackEventInBackground: async <T extends EventType>({
+    eventType,
+    eventProperties,
+  }: {
+    eventType: T;
+    eventProperties: EventPropertiesMap[T];
+  }) =>
+    backgroundMessage<TrackMixpanelEventRequest, TrackMixpanelEventResponse>(
+      "track-mixpanel-event",
+      {
+        event: eventType,
+        properties: eventProperties,
+      }
+    ),
 };

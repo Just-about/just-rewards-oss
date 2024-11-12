@@ -3,11 +3,11 @@ import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 
 import { BellRingIconSolid } from "@ja-packages/icons/solid/BellRing";
 import { XMarkIconSolid } from "@ja-packages/icons/solid/XMark";
+import { EventType } from "@ja-packages/utils/mixpanel";
 
 import { Button } from "~components/Button/Button";
 import { HIDE_FADE_OUT_DURATION } from "~components/consts";
 import { Tracking } from "~mixpanel";
-import { EventType } from "~mixpanel/events";
 import { listBounties } from "~utils/fetchers/list-bounties";
 import { STORAGE_KEYS, setStoredData, getStoredData } from "~utils/storage";
 import { updateCurrentBounties } from "~utils/update-current-bounties";
@@ -161,17 +161,15 @@ export const ShadowDOMNotification = ({
   }, [setIsDismissedForURL, dismissalData, domain]);
 
   const handleDismissNotificationClick = useCallback(async () => {
-    await Tracking.trackEvent({
-      callback: () => {
-        setDismissed();
-        hide();
-      },
+    await Tracking.trackEventInBackground({
       eventType: EventType.BUTTON_CLICKED,
       eventProperties: {
         location: "notification-dismissed",
         domain,
       },
     });
+    setDismissed();
+    hide();
   }, [hide, setDismissed, domain]);
 
   // Update the bounties & count in the app/badge whenever the bountyIDs change

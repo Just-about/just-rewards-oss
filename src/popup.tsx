@@ -1,12 +1,13 @@
 import { useEffect, useState } from "react";
 
+import { EventType } from "@ja-packages/utils/mixpanel";
+
 import { App, AppWrapper } from "~components/App/App";
 import { getAppRouteEntrypoint } from "~components/App/getAppRouteEntrypoint";
 import { LoadingSpinner } from "~components/LoadingSpinner/LoadingSpinner";
 import { RouterProvider } from "~components/RouterOutlet";
 import { ROUTES } from "~components/routes";
 import { Tracking } from "~mixpanel";
-import { EventType } from "~mixpanel/events";
 import { updateCurrentBounties } from "~utils/update-current-bounties";
 
 import "./style.css";

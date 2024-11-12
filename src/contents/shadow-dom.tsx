@@ -1,11 +1,12 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 
+import { EventType } from "@ja-packages/utils/mixpanel";
+
 import { RouterProvider, useRouter } from "~components/RouterOutlet";
 import { ShadowDOMApp } from "~components/ShadowDOMApp";
 import { ShadowDOMNotification } from "~components/ShadowDOMNotification";
 import { ROUTES } from "~components/routes";
 import { Tracking } from "~mixpanel";
-import { EventType } from "~mixpanel/events";
 import { getTailwind } from "~utils/get-tailwind";
 
 import type { SetInterval, SetTimeout } from "@ja-packages/utils/timer";

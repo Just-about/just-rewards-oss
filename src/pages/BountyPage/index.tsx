@@ -2,6 +2,7 @@ import { useCallback, useEffect, useMemo, useState } from "react";
 
 import { CircleRightArrowSolid } from "@ja-packages/icons/solid/CircleRightArrow";
 import { formatCurrency } from "@ja-packages/utils/format";
+import { EventType } from "@ja-packages/utils/mixpanel";
 import { Z_INDEXES } from "@ja-packages/utils/z-indexes";
 
 import { Button } from "~components/Button";
@@ -11,7 +12,6 @@ import { useRouter } from "~components/RouterOutlet";
 import { NotFound } from "~components/RouterOutlet/RouterOutlet";
 import { Skeleton } from "~components/Skeleton/Skeleton";
 import { Tracking } from "~mixpanel";
-import { EventType } from "~mixpanel/events";
 import { getBounty } from "~utils/fetchers";
 
 import type { JrxBounty } from "@ja-packages/types/jarb";
@@ -65,13 +65,13 @@ export const BountyPage = ({ bountyID }: BountyPageProps) => {
   const handleOpenRules = useCallback(async () => {
     if (!bounty) return;
 
-    await Tracking.trackEvent({
-      callback: () => router.openExternalUrl(bounty.url),
+    await Tracking.trackEventInBackground({
       eventType: EventType.BUTTON_CLICKED,
       eventProperties: {
         location: "view-rules",
       },
     });
+    router.openExternalUrl(bounty.url);
   }, [router, bounty?.url]);
 
   // TODO: add loading state
@@ -175,12 +175,13 @@ export const BountyPage = ({ bountyID }: BountyPageProps) => {
               <Button
                 color="purple"
                 onClick={() => {
-                  Tracking.trackEvent({
-                    callback: () =>
-                      router.openExternalUrl(`${bounty.url}?referrer=jrx`),
+                  Tracking.trackEventInBackground({
                     eventType: EventType.BOUNTY_SUBMISSION_INTENT_STARTED,
-                    eventProperties: {},
+                    eventProperties: {
+                      bountyId: bounty.id,
+                    },
                   });
+                  router.openExternalUrl(`${bounty.url}?referrer=jrx`);
                 }}
                 size="sm"
                 iconLeft={CircleRightArrowSolid}

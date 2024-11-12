@@ -5,10 +5,10 @@ import { useCallback } from "react";
 
 import { XMarkIconRegular } from "@ja-packages/icons/regular/XMark";
 import { BellIconSolid } from "@ja-packages/icons/solid/Bell";
+import { EventType } from "@ja-packages/utils/mixpanel";
 
 import { useRouter } from "~components/RouterOutlet";
 import { Tracking } from "~mixpanel";
-import { EventType } from "~mixpanel/events";
 
 interface HeaderProps {
   onClose?: () => void;
@@ -18,16 +18,13 @@ export const Header = ({ onClose }: HeaderProps) => {
   const router = useRouter();
 
   const handleClickNotifications = useCallback(async () => {
-    await Tracking.trackEvent({
-      callback: () =>
-        router.openExternalUrl(
-          `${process.env.PLASMO_PUBLIC_SITE_URL}/activity`
-        ),
+    await Tracking.trackEventInBackground({
       eventType: EventType.BUTTON_CLICKED,
       eventProperties: {
         location: "notifications",
       },
     });
+    router.openExternalUrl(`${process.env.PLASMO_PUBLIC_SITE_URL}/activity`);
   }, [router]);
 
   return (
