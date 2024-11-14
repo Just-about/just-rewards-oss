@@ -9,6 +9,7 @@ import { Button } from "~components/Button/Button";
 import { HIDE_FADE_OUT_DURATION } from "~components/consts";
 import { Tracking } from "~mixpanel";
 import { listBounties } from "~utils/fetchers/list-bounties";
+import { listTriggeredBounties } from "~utils/fetchers/list-triggered-bounties";
 import { STORAGE_KEYS, setStoredData, getStoredData } from "~utils/storage";
 import { updateCurrentBounties } from "~utils/update-current-bounties";
 
@@ -42,6 +43,8 @@ export const ShadowDOMNotification = ({
 }: ShadowDOMNotificationProps) => {
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [bountyIDs, setBountyIDs] = useState<number[]>([]);
+  const [domainPotentialEarnings, setDomainPotentialEarnings] =
+    useState<number>(0);
   const [dismissalData, setDismissalData] = useState<DismissalData | null>(
     null
   );
@@ -98,16 +101,19 @@ export const ShadowDOMNotification = ({
       lifetimeRef.current = NOTIFICATION_LIFETIME_SECONDS;
       setLifetime(NOTIFICATION_LIFETIME_SECONDS);
       setBountyIDs([]);
+      setDomainPotentialEarnings(0);
 
       await updateCurrentBounties();
 
-      const bounties = await listBounties({ url });
+      const { bounties, domainPotentialEarnings: potentialEarnings } =
+        await listTriggeredBounties({ url });
       const ids = bounties.map((bounty) => bounty.id);
       const dismissals = await getStoredData<DismissalData>(
         STORAGE_KEYS.DISMISSED_NOTIFICATION
       );
 
       setBountyIDs(ids);
+      setDomainPotentialEarnings(potentialEarnings);
       setDismissalData(dismissals || {});
 
       if (ids.length) {
@@ -239,7 +245,7 @@ export const ShadowDOMNotification = ({
   return (
     <div
       className={classNames(
-        "h-[99px] flex items-center fixed top-5 right-5",
+        "min-h-[99px] max-w-[340px] flex items-center fixed top-5 right-5 p-3",
         animationState === AnimationState.Hiding
           ? "fade-out-animation"
           : "slide-up-animation",
@@ -260,10 +266,16 @@ export const ShadowDOMNotification = ({
             onClick={handleDismissNotificationClick}
             className="absolute right-0 top-0 cursor-pointer opacity-90 h-[20px]"
           />
-
-          <p className="text-sm leading-[21px] font-semibold mb-3 font-['Poppins']">
-            Rewards available
-          </p>
+          <div className="w-full pr-[24px]">
+            <p className="text-sm leading-[21px] font-semibold mb-3 font-['Poppins']">
+              {domainPotentialEarnings > 0
+                ? `$${domainPotentialEarnings} of rewards available on ${domain.replace(
+                    /^www\./,
+                    ""
+                  )}`
+                : "Rewards available"}
+            </p>
+          </div>
 
           <div className="flex">
             <Button
