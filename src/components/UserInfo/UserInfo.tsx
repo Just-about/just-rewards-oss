@@ -9,8 +9,8 @@ import { convertStringToPrettyHexcode } from "@ja-packages/utils/string-to-color
 import { Button } from "~components/Button";
 import { useRouter } from "~components/RouterOutlet";
 import { Skeleton } from "~components/Skeleton/Skeleton";
-import { Tracking } from "~mixpanel";
-import { getBalance, getUser } from "~utils/fetchers";
+import { getBalance, getUser, trackEvent } from "~utils/fetchers";
+import { getUserInfo } from "~utils/fetchers/get-user-info";
 import { STORAGE_KEYS, getStoredData, setStoredData } from "~utils/storage";
 
 import type { UserType } from "@ja-packages/types";
@@ -51,45 +51,20 @@ export const UserInfo = ({ className }: UserInfoProps) => {
 
   useEffect(() => {
     const loadUserDetails = async () => {
-      // Check if stored data exists
-      const storedUser = await getStoredData<UserType>(STORAGE_KEYS.USER_DATA);
-      const storedBalance = await getStoredData<string>(
-        STORAGE_KEYS.USER_BALANCE
-      );
-
-      // Use stored data if it exists
-      if (storedUser && storedBalance) {
-        setUser(storedUser);
-        setBalance(
-          formatCurrency(storedBalance, {
-            addCommas: true,
-            removeDecimalsWhenInteger: true,
-          })
-        );
-      } else {
-        // Fetch latest data only if stored data is null
-        const latestUser = await getUser();
-        const latestBalance = await getBalance();
-
-        // Update state with latest data
-        setUser(latestUser);
-        if (latestBalance !== null) {
-          setBalance(
-            formatCurrency(latestBalance, {
-              addCommas: true,
-              removeDecimalsWhenInteger: true,
-            })
-          );
-        } else {
-          setBalance(null);
-        }
-
-        // Update storage with latest data
-        Promise.allSettled([
-          setStoredData(STORAGE_KEYS.USER_DATA, latestUser),
-          setStoredData(STORAGE_KEYS.USER_BALANCE, latestBalance),
-        ]);
+      const userInfo = await getUserInfo();
+      if (!userInfo) {
+        setUser(null);
+        setBalance(null);
+        return;
       }
+
+      setUser(userInfo.user);
+      setBalance(
+        formatCurrency(userInfo.balance, {
+          addCommas: true,
+          removeDecimalsWhenInteger: true,
+        })
+      );
     };
 
     loadUserDetails().finally(() => setIsLoading(false));
@@ -99,26 +74,12 @@ export const UserInfo = ({ className }: UserInfoProps) => {
     return () => clearTimeout(timer);
   }, []);
 
-  // Setup Mixpanel
-  const [isMixpanelSetupComplete, setIsMixpanelSetupComplete] = useState(false);
-  useEffect(() => {
-    if (!user || isMixpanelSetupComplete) return;
-
-    // We only need a simple age calculation for Mixpanel so just minus the years
-    const age = user.dob
-      ? new Date().getFullYear() - new Date(user.dob).getFullYear()
-      : undefined;
-
-    Tracking.identify({ id: user.id, age, staff: Boolean(user.staff) });
-    setIsMixpanelSetupComplete(true);
-  }, [isMixpanelSetupComplete, user]);
-
   const handleViewEarnings = useCallback(async () => {
-    await Tracking.trackEventInBackground({
-      eventType: EventType.BUTTON_CLICKED,
-      eventProperties: {
+    await trackEvent({
+      properties: {
         location: "balance",
       },
+      type: EventType.JRX_BUTTON_CLICKED,
     });
     router.openExternalUrl(
       `${process.env.PLASMO_PUBLIC_SITE_URL}/activity/earnings`
@@ -128,11 +89,11 @@ export const UserInfo = ({ className }: UserInfoProps) => {
   const handleViewProfile = useCallback(async () => {
     if (!user) return;
 
-    await Tracking.trackEventInBackground({
-      eventType: EventType.BUTTON_CLICKED,
-      eventProperties: {
+    await trackEvent({
+      properties: {
         location: "profile",
       },
+      type: EventType.JRX_BUTTON_CLICKED,
     });
     router.openExternalUrl(
       `${process.env.PLASMO_PUBLIC_SITE_URL}/user/${user.username}`

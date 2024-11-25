@@ -1,7 +1,7 @@
 {
   "name": "just-rewards",
   "displayName": "Just Rewards",
-  "version": "1.2.0",
+  "version": "1.2.2",
   "description": "Just Rewards",
   "author": "justabout.com",
   "scripts": {},
@@ -21,7 +21,8 @@
     "@trpc/client": "next",
     "@types/route-parser": "^0.1.7",
     "classnames": "^2.5.1",
-    "mixpanel-browser": "^2.55.1",
+    "jwt-decode": "^4.0.0",
+    "nanoid": "^5.0.8",
     "plasmo": "^0.89.3",
     "puppeteer": "^22.15.0",
     "react": "18.3.1",

@@ -8,7 +8,7 @@ import { BellIconSolid } from "@ja-packages/icons/solid/Bell";
 import { EventType } from "@ja-packages/utils/mixpanel";
 
 import { useRouter } from "~components/RouterOutlet";
-import { Tracking } from "~mixpanel";
+import { trackEvent } from "~utils/fetchers";
 
 interface HeaderProps {
   onClose?: () => void;
@@ -18,11 +18,11 @@ export const Header = ({ onClose }: HeaderProps) => {
   const router = useRouter();
 
   const handleClickNotifications = useCallback(async () => {
-    await Tracking.trackEventInBackground({
-      eventType: EventType.BUTTON_CLICKED,
-      eventProperties: {
+    await trackEvent({
+      properties: {
         location: "notifications",
       },
+      type: EventType.JRX_BUTTON_CLICKED,
     });
     router.openExternalUrl(`${process.env.PLASMO_PUBLIC_SITE_URL}/activity`);
   }, [router]);

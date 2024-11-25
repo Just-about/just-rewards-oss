@@ -10,7 +10,7 @@ import { EventType } from "@ja-packages/utils/mixpanel";
 
 import { useRouter } from "~components/RouterOutlet";
 import { SubmissionIcon } from "~components/SubmissionIcon";
-import { Tracking } from "~mixpanel";
+import { trackEvent } from "~utils/fetchers";
 
 export interface BountyListItemProps {
   communityName: string;
@@ -32,9 +32,8 @@ export const BountyListItem = ({
   const router = useRouter();
 
   const handleClick = useCallback(async () => {
-    await Tracking.trackEventInBackground({
-      eventType: EventType.CLICKED_BOUNTY_DETAIL_FROM_LIST_VIEW,
-      eventProperties: {},
+    await trackEvent({
+      type: EventType.JRX_CLICKED_BOUNTY_DETAIL_FROM_LIST_VIEW,
     });
     router.push(`/bounties/${id}`);
   }, [router, id]);

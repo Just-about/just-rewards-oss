@@ -6,7 +6,7 @@ import { RouterProvider, useRouter } from "~components/RouterOutlet";
 import { ShadowDOMApp } from "~components/ShadowDOMApp";
 import { ShadowDOMNotification } from "~components/ShadowDOMNotification";
 import { ROUTES } from "~components/routes";
-import { Tracking } from "~mixpanel";
+import { trackEvent } from "~utils/fetchers";
 import { getTailwind } from "~utils/get-tailwind";
 
 import type { SetInterval, SetTimeout } from "@ja-packages/utils/timer";
@@ -19,8 +19,11 @@ export const config: PlasmoCSConfig = {
   css: ["font.css"],
 };
 
-/* The main entrypoint for the application, ShadowDOM handles what is displayed, overlaid on top
- * of the page content - use `viewState` to dictate what should be rendered */
+/**
+ * The main entrypoint for the application, ShadowDOM handles what is displayed, overlaid on top
+ * of the page content - use `viewState` to dictate what should be rendered
+ */
+
 const ShadowDOM = () => {
   const router = useRouter();
 
@@ -118,11 +121,11 @@ const ShadowDOM = () => {
 
       setViewState("app");
 
-      Tracking.trackEvent({
-        eventType: EventType.REWARDS_NOTIFICATION_VIEW_REWARDS_BUTTON_CLICKED,
-        eventProperties: {
+      trackEvent({
+        properties: {
           domain,
         },
+        type: EventType.JRX_REWARDS_NOTIFICATION_VIEW_REWARDS_BUTTON_CLICKED,
       });
 
       if (bountyIDs.length > 1) {

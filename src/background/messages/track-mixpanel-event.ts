@@ -1,12 +1,12 @@
 import { trpc } from "@ja-packages/trpc";
-import { clientTRPCQuery } from "@ja-packages/trpc/query";
 
-import type { EventType, EventProperties } from "@ja-packages/utils/mixpanel";
+import { clientTRPCQuery } from "~background/helpers/trpc.client";
+
+import type { MixpanelEvent } from "@ja-packages/utils/mixpanel";
 import type { PlasmoMessaging } from "@plasmohq/messaging";
 
 export type TrackMixpanelEventRequest = {
-  event: EventType;
-  properties: unknown;
+  event: MixpanelEvent;
 };
 export type TrackMixpanelEventResponse = boolean;
 
@@ -24,10 +24,10 @@ const handler: PlasmoMessaging.MessageHandler<
     return;
   }
 
-  const [error] = await clientTRPCQuery(trpc.tracking.trackEvent, {
-    event: req.body.event,
-    properties: req.body.properties,
-  });
+  const [error] = await clientTRPCQuery(
+    trpc.tracking.trackEvent,
+    req.body.event
+  );
 
   if (error) {
     res.send({

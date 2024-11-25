@@ -7,10 +7,9 @@ import { EventType } from "@ja-packages/utils/mixpanel";
 
 import { Button } from "~components/Button/Button";
 import { HIDE_FADE_OUT_DURATION } from "~components/consts";
-import { Tracking } from "~mixpanel";
-import { listBounties } from "~utils/fetchers/list-bounties";
+import { trackEvent } from "~utils/fetchers";
 import { listTriggeredBounties } from "~utils/fetchers/list-triggered-bounties";
-import { STORAGE_KEYS, setStoredData, getStoredData } from "~utils/storage";
+import { getStoredData, setStoredData, STORAGE_KEYS } from "~utils/storage";
 import { updateCurrentBounties } from "~utils/update-current-bounties";
 
 import type { SetInterval } from "@ja-packages/utils/timer";
@@ -58,8 +57,8 @@ export const ShadowDOMNotification = ({
 
   const [isHidden, setIsHidden] = useState(true);
 
-  // If the user has hit "Dismiss" then that dismissal will be remembered for all URLs that fall
-  // under that domain
+  // If we have a passive or active "Dismiss" then that dismissal will be
+  // remembered for all URLs that fall under that domain
   const [isDismissedForURL, setIsDismissedForURL] = useState(false);
 
   // How long the notification has left until it hides
@@ -80,6 +79,17 @@ export const ShadowDOMNotification = ({
     }, HIDE_FADE_OUT_DURATION * 1000);
   }, [setAnimationState, setIsHidden]);
 
+  const setDismissed = useCallback(() => {
+    setIsDismissedForURL(true);
+    if (!domain) return;
+    const expiration = getDismissalExpiration();
+    const newDismissalData = {
+      ...dismissalData,
+      [domain]: expiration,
+    };
+    setStoredData(STORAGE_KEYS.DISMISSED_NOTIFICATION, newDismissalData);
+  }, [setIsDismissedForURL, dismissalData, domain]);
+
   const stopTimer = useCallback(() => {
     clearInterval(countdownInterval.current);
   }, [countdownInterval]);
@@ -90,11 +100,12 @@ export const ShadowDOMNotification = ({
       setLifetime(lifetimeRef.current);
 
       if (lifetimeRef.current === 0) {
+        setDismissed();
         hide();
         stopTimer();
       }
     }, 1000);
-  }, [countdownInterval, setLifetime, hide, stopTimer]);
+  }, [countdownInterval, setLifetime, hide, stopTimer, setDismissed]);
 
   const loadData = useCallback(
     async (url: string) => {
@@ -155,24 +166,13 @@ export const ShadowDOMNotification = ({
     openBountyDetails(bountyIDs);
   }, [hide, bountyIDs]);
 
-  const setDismissed = useCallback(() => {
-    setIsDismissedForURL(true);
-    if (!domain) return;
-    const expiration = getDismissalExpiration();
-    const newDismissalData = {
-      ...dismissalData,
-      [domain]: expiration,
-    };
-    setStoredData(STORAGE_KEYS.DISMISSED_NOTIFICATION, newDismissalData);
-  }, [setIsDismissedForURL, dismissalData, domain]);
-
   const handleDismissNotificationClick = useCallback(async () => {
-    await Tracking.trackEventInBackground({
-      eventType: EventType.BUTTON_CLICKED,
-      eventProperties: {
+    await trackEvent({
+      properties: {
         location: "notification-dismissed",
         domain,
       },
+      type: EventType.JRX_BUTTON_CLICKED,
     });
     setDismissed();
     hide();
@@ -209,12 +209,13 @@ export const ShadowDOMNotification = ({
     // Disabling ESlint to make it easy to comment out env check for testing
     /* eslint-disable */
     () => {
+      // prettier-ignore
       return (
         isLoading ||
         isHidden ||
         bountyIDs.length === 0 ||
         // Please do not refactor the lines below!
-        //They are on the line below to make it easy to comment out!
+        // They are on the line below to make it easy to comment out!
         (
           isDismissedForURL
           // DO NOT MOVE THE AMPERSANDS!!
@@ -230,11 +231,11 @@ export const ShadowDOMNotification = ({
   useEffect(() => {
     if (doNotDisplay) return;
 
-    Tracking.trackEvent({
-      eventType: EventType.REWARDS_NOTIFICATIONS_TRIGGERED,
-      eventProperties: {
+    trackEvent({
+      properties: {
         domain,
       },
+      type: EventType.JRX_REWARDS_NOTIFICATION_TRIGGERED,
     });
   }, [doNotDisplay, domain]);
 

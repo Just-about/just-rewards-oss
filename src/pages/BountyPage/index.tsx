@@ -11,8 +11,7 @@ import { NavigateHomeButton } from "~components/NavigateHomeButton/NavigateHomeB
 import { useRouter } from "~components/RouterOutlet";
 import { NotFound } from "~components/RouterOutlet/RouterOutlet";
 import { Skeleton } from "~components/Skeleton/Skeleton";
-import { Tracking } from "~mixpanel";
-import { getBounty } from "~utils/fetchers";
+import { getBounty, trackEvent } from "~utils/fetchers";
 
 import type { JrxBounty } from "@ja-packages/types/jarb";
 
@@ -65,11 +64,11 @@ export const BountyPage = ({ bountyID }: BountyPageProps) => {
   const handleOpenRules = useCallback(async () => {
     if (!bounty) return;
 
-    await Tracking.trackEventInBackground({
-      eventType: EventType.BUTTON_CLICKED,
-      eventProperties: {
+    await trackEvent({
+      properties: {
         location: "view-rules",
       },
+      type: EventType.JRX_BUTTON_CLICKED,
     });
     router.openExternalUrl(bounty.url);
   }, [router, bounty?.url]);
@@ -175,11 +174,11 @@ export const BountyPage = ({ bountyID }: BountyPageProps) => {
               <Button
                 color="purple"
                 onClick={() => {
-                  Tracking.trackEventInBackground({
-                    eventType: EventType.BOUNTY_SUBMISSION_INTENT_STARTED,
-                    eventProperties: {
+                  trackEvent({
+                    properties: {
                       bountyId: bounty.id,
                     },
+                    type: EventType.JRX_BOUNTY_SUBMISSION_INTENT_STARTED,
                   });
                   router.openExternalUrl(`${bounty.url}?referrer=jrx`);
                 }}

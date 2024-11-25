@@ -1,5 +1,6 @@
 import { trpc } from "@ja-packages/trpc";
-import { clientTRPCQuery } from "@ja-packages/trpc/query";
+
+import { clientTRPCQuery } from "~background/helpers/trpc.client";
 
 import type { JrxBounty } from "@ja-packages/types/jarb";
 import type { PlasmoMessaging } from "@plasmohq/messaging";

@@ -33,13 +33,6 @@ const handler: PlasmoMessaging.MessageHandler<
 
   const cookieSettings = getAccessTokenCookieSettings(accessToken);
 
-  chrome.cookies.set({
-    url: BASE_URL,
-    name: "ja-access",
-    value: accessToken,
-    expirationDate: cookieSettings.expires,
-  });
-
   res.send({
     data: {
       accessToken,
