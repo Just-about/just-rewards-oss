@@ -2,10 +2,10 @@ import classNames from "classnames";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 
 import { BellRingIconSolid } from "@ja-packages/icons/solid/BellRing";
-import { XMarkIconSolid } from "@ja-packages/icons/solid/XMark";
 import { EventType } from "@ja-packages/utils/mixpanel";
 
-import { Button } from "~components/Button/Button";
+import { DismissButton } from "~components/ShadowDOMNotification/DismissButton";
+import { ViewButton } from "~components/ShadowDOMNotification/ViewButton";
 import { HIDE_FADE_OUT_DURATION } from "~components/consts";
 import { trackEvent } from "~utils/fetchers";
 import { listTriggeredBounties } from "~utils/fetchers/list-triggered-bounties";
@@ -42,8 +42,7 @@ export const ShadowDOMNotification = ({
 }: ShadowDOMNotificationProps) => {
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [bountyIDs, setBountyIDs] = useState<number[]>([]);
-  const [domainPotentialEarnings, setDomainPotentialEarnings] =
-    useState<number>(0);
+  const [rewardsAvailable, setRewardsAvailable] = useState<number>(0);
   const [dismissalData, setDismissalData] = useState<DismissalData | null>(
     null
   );
@@ -59,7 +58,7 @@ export const ShadowDOMNotification = ({
 
   // If we have a passive or active "Dismiss" then that dismissal will be
   // remembered for all URLs that fall under that domain
-  const [isDismissedForURL, setIsDismissedForURL] = useState(false);
+  const [isDomainOnCooldown, setDomainIsOnCooldown] = useState(false);
 
   // How long the notification has left until it hides
   const [lifetime, setLifetime] = useState(NOTIFICATION_LIFETIME_SECONDS);
@@ -79,8 +78,7 @@ export const ShadowDOMNotification = ({
     }, HIDE_FADE_OUT_DURATION * 1000);
   }, [setAnimationState, setIsHidden]);
 
-  const setDismissed = useCallback(() => {
-    setIsDismissedForURL(true);
+  const updateDomainCooldown = useCallback(() => {
     if (!domain) return;
     const expiration = getDismissalExpiration();
     const newDismissalData = {
@@ -88,7 +86,7 @@ export const ShadowDOMNotification = ({
       [domain]: expiration,
     };
     setStoredData(STORAGE_KEYS.DISMISSED_NOTIFICATION, newDismissalData);
-  }, [setIsDismissedForURL, dismissalData, domain]);
+  }, [dismissalData, domain]);
 
   const stopTimer = useCallback(() => {
     clearInterval(countdownInterval.current);
@@ -100,50 +98,48 @@ export const ShadowDOMNotification = ({
       setLifetime(lifetimeRef.current);
 
       if (lifetimeRef.current === 0) {
-        setDismissed();
         hide();
         stopTimer();
       }
     }, 1000);
-  }, [countdownInterval, setLifetime, hide, stopTimer, setDismissed]);
+  }, [countdownInterval, setLifetime, hide, stopTimer]);
 
   const loadData = useCallback(
     async (url: string) => {
       lifetimeRef.current = NOTIFICATION_LIFETIME_SECONDS;
       setLifetime(NOTIFICATION_LIFETIME_SECONDS);
       setBountyIDs([]);
-      setDomainPotentialEarnings(0);
+      setRewardsAvailable(0);
 
       await updateCurrentBounties();
 
-      const { bounties, domainPotentialEarnings: potentialEarnings } =
-        await listTriggeredBounties({ url });
-      const ids = bounties.map((bounty) => bounty.id);
+      const resp = await listTriggeredBounties({ url });
+      const ids = resp.bounties.map((bounty) => bounty.id);
       const dismissals = await getStoredData<DismissalData>(
         STORAGE_KEYS.DISMISSED_NOTIFICATION
       );
 
       setBountyIDs(ids);
-      setDomainPotentialEarnings(potentialEarnings);
-      setDismissalData(dismissals || {});
+      setRewardsAvailable(resp.rewardsAvailable);
 
       if (ids.length) {
         await updateCurrentBounties({ ids });
 
-        const isDismissed = (() => {
+        setAnimationState(AnimationState.Showing);
+        setIsHidden(false);
+
+        const isCoolingDown = (() => {
           if (!dismissals) return false;
           if (!domain) return false;
           const timeout = dismissals[domain];
           return timeout && new Date() < new Date(timeout);
         })();
 
-        setAnimationState(AnimationState.Showing);
-        setIsHidden(false);
-        setIsDismissedForURL(isDismissed);
+        setDomainIsOnCooldown(isCoolingDown);
         startTimer();
       }
     },
-    [setBountyIDs, setDismissalData, setIsDismissedForURL, domain]
+    [setBountyIDs, setDismissalData, setDomainIsOnCooldown, domain]
   );
 
   const notifyChangeInCurrentBounties = useCallback(
@@ -174,9 +170,8 @@ export const ShadowDOMNotification = ({
       },
       type: EventType.JRX_BUTTON_CLICKED,
     });
-    setDismissed();
     hide();
-  }, [hide, setDismissed, domain]);
+  }, [hide, domain]);
 
   // Update the bounties & count in the app/badge whenever the bountyIDs change
   useEffect(() => {
@@ -205,27 +200,20 @@ export const ShadowDOMNotification = ({
     setup();
   }, [currentURL, loadData, setIsLoading]);
 
-  const doNotDisplay = useMemo(
-    // Disabling ESlint to make it easy to comment out env check for testing
-    /* eslint-disable */
-    () => {
-      // prettier-ignore
-      return (
-        isLoading ||
-        isHidden ||
-        bountyIDs.length === 0 ||
-        // Please do not refactor the lines below!
-        // They are on the line below to make it easy to comment out!
-        (
-          isDismissedForURL
-          // DO NOT MOVE THE AMPERSANDS!!
-          && process.env.NODE_ENV === "production"
-        )
-      );
-    },
-    /* eslint-enable */
-    [isLoading, bountyIDs, isHidden, isDismissedForURL]
-  );
+  const doNotDisplay = useMemo(() => {
+    // This is included on a separate line to make it easy for debugging and commenting out.
+    // prettier-ignore
+    // eslint-disable-next-line
+    const isCoolingDownOnProduction = isDomainOnCooldown
+        && process.env.NODE_ENV === "production";
+
+    return (
+      isLoading ||
+      isHidden ||
+      bountyIDs.length === 0 ||
+      isCoolingDownOnProduction
+    );
+  }, [isLoading, bountyIDs, isHidden, isDomainOnCooldown]);
 
   // Capture the fact that the notification opened, only once on mount
   useEffect(() => {
@@ -237,6 +225,7 @@ export const ShadowDOMNotification = ({
       },
       type: EventType.JRX_REWARDS_NOTIFICATION_TRIGGERED,
     });
+    updateDomainCooldown();
   }, [doNotDisplay, domain]);
 
   useEffect(() => () => stopTimer(), [stopTimer]);
@@ -263,43 +252,23 @@ export const ShadowDOMNotification = ({
         </div>
 
         <div className="flex flex-col relative">
-          <XMarkIconSolid
-            onClick={handleDismissNotificationClick}
-            className="absolute right-0 top-0 cursor-pointer opacity-90 h-[20px]"
-          />
           <div className="w-full pr-[24px]">
-            <p className="text-sm leading-[21px] font-semibold mb-3 font-['Poppins']">
-              {domainPotentialEarnings > 0
-                ? `$${domainPotentialEarnings} of rewards available on ${domain.replace(
-                    /^www\./,
-                    ""
-                  )}`
-                : "Rewards available"}
+            <p className="text-xs mb-0 font-['SourceSans3'] opacity-60">
+              {domain.replace(/^www\./, "")}
+            </p>
+            <p className="text-md leading-[19px] font-semibold mb-3 font-['Poppins']">
+              {`$${rewardsAvailable} reward${
+                bountyIDs.length > 1 ? "s" : ""
+              } available`}
             </p>
           </div>
 
           <div className="flex">
-            <Button
-              size="sm"
-              color="white"
-              className="mr-2"
-              onClick={showShadowDOMApp}
-            >
-              View rewards
-            </Button>
-
-            <Button
-              size="sm"
-              color="light-purple"
-              onClick={handleDismissNotificationClick}
-            >
-              <span>
-                Dismiss{" "}
-                <span className="font-light font-['SourceCode']">
-                  ({lifetime})
-                </span>
-              </span>
-            </Button>
+            <ViewButton handleClick={showShadowDOMApp} />
+            <DismissButton
+              handleClick={handleDismissNotificationClick}
+              lifetime={lifetime}
+            />
           </div>
         </div>
       </div>

@@ -1,5 +1,6 @@
 import classNames from "classnames";
 import { useCallback, type PropsWithChildren } from "react";
+import { twMerge } from "tailwind-merge";
 
 import type { JAIcon } from "@ja-packages/icons/types";
 
@@ -79,17 +80,17 @@ export const Button = ({
     <ButtonWrapper href={isDisabled ? undefined : href}>
       <button
         onClick={handleClick}
-        className={classNames(
+        className={twMerge(
           "rounded-full py-2 px-5 flex items-center justify-center cursor-pointer transition-colors",
+          classNames({ "cursor-not-allowed opacity-50": isDisabled }),
           colors[color].button,
           dimensions[size].button,
-          className,
-          { "cursor-not-allowed opacity-50": isDisabled }
+          className
         )}
         type="button"
       >
         <span
-          className={classNames(
+          className={twMerge(
             colors[color].text,
             dimensions[size].text,
             "font-semibold flex gap-2 items-center justify-center font-['Poppins']"

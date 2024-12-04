@@ -13,6 +13,7 @@ export type ListTriggeredBountiesRequest = {
 export type ListTriggeredBountiesResponse = {
   bounties: JrxBounty[];
   domainPotentialEarnings: number;
+  rewardsAvailable: number;
 };
 
 const handler: PlasmoMessaging.MessageHandler<
@@ -47,10 +48,7 @@ const handler: PlasmoMessaging.MessageHandler<
   }
 
   res.send({
-    data: {
-      bounties: resp.data.bounties,
-      domainPotentialEarnings: resp.data.domainPotentialEarnings,
-    },
+    data: resp.data,
   });
 };
 

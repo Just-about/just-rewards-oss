@@ -5,10 +5,10 @@ import {
 import { backgroundMessage } from "~utils/messages/background-message";
 
 export const listTriggeredBounties = async ({ url }: { url: string }) => {
-  const { bounties, domainPotentialEarnings } = await backgroundMessage<
+  const { bounties, rewardsAvailable } = await backgroundMessage<
     ListTriggeredBountiesRequest,
     ListTriggeredBountiesResponse
   >("list-triggered-bounties", { filter: { url } });
 
-  return { bounties, domainPotentialEarnings };
+  return { bounties, rewardsAvailable };
 };
