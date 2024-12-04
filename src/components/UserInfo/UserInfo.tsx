@@ -9,9 +9,8 @@ import { convertStringToPrettyHexcode } from "@ja-packages/utils/string-to-color
 import { Button } from "~components/Button";
 import { useRouter } from "~components/RouterOutlet";
 import { Skeleton } from "~components/Skeleton/Skeleton";
-import { getBalance, getUser, trackEvent } from "~utils/fetchers";
+import { trackEvent } from "~utils/fetchers";
 import { getUserInfo } from "~utils/fetchers/get-user-info";
-import { STORAGE_KEYS, getStoredData, setStoredData } from "~utils/storage";
 
 import type { UserType } from "@ja-packages/types";
 

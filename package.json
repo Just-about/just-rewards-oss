@@ -1,8 +1,8 @@
 {
   "name": "just-rewards",
   "displayName": "Just Rewards",
-  "version": "1.2.2",
-  "description": "Just Rewards",
+  "version": "1.3.0",
+  "description": "With the Just Rewards browser extension, you can earn real money by creating content about the things you love.",
   "author": "justabout.com",
   "scripts": {},
   "permissions": [

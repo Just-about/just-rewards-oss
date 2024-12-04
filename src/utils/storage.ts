@@ -5,7 +5,6 @@ interface StoredData<T> {
   expires: number;
 }
 
-const DEFAULT_TTL = 15 * 60 * 1000; // 15 minutes in milliseconds
 const storage = new Storage();
 
 // Constants for commonly used storage keys
@@ -33,13 +32,15 @@ export async function getStoredData<T>(key: StorageKey): Promise<T | null> {
   return null;
 }
 
+const ONE_YEAR = 1000 * 60 * 60 * 24 * 265;
+
 // Stores data with a given key and expiration time
 export async function setStoredData<T>(
   key: StorageKey,
   data: T,
-  ttl: number = DEFAULT_TTL
+  ttl?: number
 ): Promise<void> {
-  const expirationTime = Date.now() + ttl;
+  const expirationTime = Date.now() + (ttl || ONE_YEAR);
   const itemToStore: StoredData<T> = { data, expires: expirationTime };
   await storage.set(key, JSON.stringify(itemToStore));
 }

@@ -21,7 +21,7 @@ export const IndexPage = () => {
       setTabs([
         {
           id: "hot-rewards",
-          label: "Hot rewards",
+          label: "Hot",
           content: (
             <BountyList
               items={resp.hot.map((bounty) => ({

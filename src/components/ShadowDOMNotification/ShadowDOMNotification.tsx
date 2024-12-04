@@ -43,9 +43,6 @@ export const ShadowDOMNotification = ({
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [bountyIDs, setBountyIDs] = useState<number[]>([]);
   const [rewardsAvailable, setRewardsAvailable] = useState<number>(0);
-  const [dismissalData, setDismissalData] = useState<DismissalData | null>(
-    null
-  );
 
   // We have to wait until the fade out animation has completed before disabling the shadow DOM
   // element is removed from the page. If `animationState` is set to `Hiding`, the notification
@@ -78,15 +75,19 @@ export const ShadowDOMNotification = ({
     }, HIDE_FADE_OUT_DURATION * 1000);
   }, [setAnimationState, setIsHidden]);
 
-  const updateDomainCooldown = useCallback(() => {
+  const updateDomainCooldown = useCallback(async () => {
     if (!domain) return;
     const expiration = getDismissalExpiration();
+    const dismissals = await getStoredData<DismissalData>(
+      STORAGE_KEYS.DISMISSED_NOTIFICATION
+    );
+
     const newDismissalData = {
-      ...dismissalData,
+      ...dismissals,
       [domain]: expiration,
     };
-    setStoredData(STORAGE_KEYS.DISMISSED_NOTIFICATION, newDismissalData);
-  }, [dismissalData, domain]);
+    await setStoredData(STORAGE_KEYS.DISMISSED_NOTIFICATION, newDismissalData);
+  }, [domain]);
 
   const stopTimer = useCallback(() => {
     clearInterval(countdownInterval.current);
@@ -139,7 +140,7 @@ export const ShadowDOMNotification = ({
         startTimer();
       }
     },
-    [setBountyIDs, setDismissalData, setDomainIsOnCooldown, domain]
+    [setBountyIDs, setDomainIsOnCooldown, domain]
   );
 
   const notifyChangeInCurrentBounties = useCallback(

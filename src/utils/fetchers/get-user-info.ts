@@ -37,8 +37,8 @@ export const getUserInfo = async (): Promise<UserInfo | null> => {
   if (balance === null || user === null) return null;
 
   await Promise.allSettled([
-    setStoredData(STORAGE_KEYS.USER_DATA, user),
-    setStoredData(STORAGE_KEYS.USER_BALANCE, balance),
+    setStoredData(STORAGE_KEYS.USER_DATA, user, 15 * 60 * 1000),
+    setStoredData(STORAGE_KEYS.USER_BALANCE, balance, 15 * 60 * 1000),
   ]);
 
   return {

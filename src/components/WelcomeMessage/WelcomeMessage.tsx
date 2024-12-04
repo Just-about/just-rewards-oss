@@ -33,7 +33,7 @@ export const WelcomeMessage = () => {
         data-testid="welcome-message"
         className="font-['SourceSans3'] text-[16px] leading-[120%] text-white mb-4"
       >
-        Share your knowledge, skills and passion to get your just rewards!
+        Share your knowledge, skills, and passion to get your just rewards!
       </p>
 
       <Button
