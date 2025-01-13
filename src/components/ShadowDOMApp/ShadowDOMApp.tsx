@@ -23,7 +23,7 @@ export const ShadowDOMApp = ({ closeApp }: { closeApp: () => void }) => {
     <div
       className={classNames(
         isHiding ? "fade-out-animation" : "slide-up-animation",
-        "fixed top-5 right-5 rounded-lg overflow-hidden"
+        "fixed top-5 right-5 rounded-xl overflow-hidden"
       )}
     >
       <App onClose={hideApp} />

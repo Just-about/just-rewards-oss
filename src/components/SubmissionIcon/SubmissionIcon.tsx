@@ -8,11 +8,7 @@ interface SubmissionIconProps {
   iconClassName?: string;
 }
 
-export const SubmissionIcon = ({
-  backgroundHex,
-  iconClassName,
-  icon: Icon,
-}: SubmissionIconProps) => {
+export const SubmissionIcon = ({ backgroundHex, iconClassName, icon: Icon }: SubmissionIconProps) => {
   return (
     <div
       className={classNames(

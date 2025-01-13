@@ -15,8 +15,7 @@ import { getBounty, trackEvent } from "~utils/fetchers";
 
 import type { JrxBounty } from "@ja-packages/types/jarb";
 
-const DEFAULT_BACKGROUND_URL =
-  "https://justabout.s3.eu-central-1.amazonaws.com/community/just_about_6e25e144d6.png";
+const DEFAULT_BACKGROUND_URL = "https://justabout.s3.eu-central-1.amazonaws.com/community/just_about_6e25e144d6.png";
 
 interface BountyPageProps {
   bountyID: string;
@@ -85,9 +84,7 @@ export const BountyPage = ({ bountyID }: BountyPageProps) => {
         <div
           className="absolute top-0 left-0 w-full h-[260px]"
           style={{
-            backgroundImage: `url(${
-              bounty?.community?.backgroundImageURL || DEFAULT_BACKGROUND_URL
-            })`,
+            backgroundImage: `url(${bounty?.community?.backgroundImageURL || DEFAULT_BACKGROUND_URL})`,
             backgroundPosition: "top center",
             backgroundRepeat: "no-repeat",
             backgroundSize: "cover",
@@ -95,10 +92,7 @@ export const BountyPage = ({ bountyID }: BountyPageProps) => {
           }}
         />
 
-        <div
-          className="relative flex row mb-6 mt-3"
-          style={{ zIndex: Z_INDEXES.JRX_BOUNTY_PAGE_CONTENT }}
-        >
+        <div className="relative flex row mb-6 mt-3" style={{ zIndex: Z_INDEXES.JRX_BOUNTY_PAGE_CONTENT }}>
           {isLoading ? (
             <Skeleton className="w-[160px] h-[160px] ml-5" />
           ) : (
@@ -113,9 +107,7 @@ export const BountyPage = ({ bountyID }: BountyPageProps) => {
             <div className="flex items-center justify-end grow fade-in-animation">
               <div className="flex items-center px-4 bg-[#252435] border-l-2 border-y-2 border-white rounded-l-full">
                 <p className="text-right my-3">
-                  <span className="text-[48px] leading-[100%] font-['Poppins'] text-[#F8B820] font-[400]">
-                    $
-                  </span>
+                  <span className="text-[48px] leading-[100%] font-['Poppins'] text-[#F8B820] font-[400]">$</span>
                   <span className="text-[48px] leading-[100%] font-semibold text-white font-['Poppins']">
                     {formatCurrency(bounty?.maxReward, {
                       removeDecimalsWhenInteger: true,
@@ -127,15 +119,12 @@ export const BountyPage = ({ bountyID }: BountyPageProps) => {
           )}
         </div>
 
-        <div
-          className="relative mx-5"
-          style={{ zIndex: Z_INDEXES.JRX_BOUNTY_PAGE_CONTENT }}
-        >
+        <div className="relative mx-5" style={{ zIndex: Z_INDEXES.JRX_BOUNTY_PAGE_CONTENT }}>
           <div className="mb-1">
             {isLoading ? (
               <Skeleton className="h-8 w-40" />
             ) : (
-              <span className="text-white font-['Poppins'] font-bold text-xl fade-in-animation">
+              <span className="text-white font-['Poppins'] font-bold text-2xl/8 fade-in-animation">
                 {bounty!.title}
               </span>
             )}
@@ -152,7 +141,7 @@ export const BountyPage = ({ bountyID }: BountyPageProps) => {
                 <Skeleton className="h-[20px] w-56" />
               </div>
             ) : (
-              <span className="text-white font-['SourceSans3'] !leading-[22px] text-md fade-in-animation">
+              <span className="text-white font-['SourceSans3'] !leading-[22px] text-base fade-in-animation">
                 {bounty?.description}
               </span>
             )}
@@ -163,8 +152,7 @@ export const BountyPage = ({ bountyID }: BountyPageProps) => {
               <Skeleton className="h-[20px] w-20" />
             ) : (
               <span className="text-white/60 text-sm font-['SourceSans3'] fade-in-animation">
-                In {bounty?.community?.name}{" "}
-                {deadline ? `| Closes ${deadline}` : ""}
+                In {bounty?.community?.name} {deadline ? `| Closes ${deadline}` : ""}
               </span>
             )}
           </div>

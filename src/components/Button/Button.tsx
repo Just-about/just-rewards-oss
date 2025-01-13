@@ -35,31 +35,26 @@ export const Button = ({
   iconLeft: IconLeft,
   isDisabled,
 }: ButtonProps) => {
-  const colors: Record<ButtonProps["color"], { button: string; text: string }> =
-    {
-      "light-purple": {
-        button: "bg-[#9849f5] hover:bg-[#9045e6] border-2 border-transparent",
-        text: "text-white",
-      },
-      purple: {
-        button:
-          "bg-ja-purple-600 hover:bg-ja-purple-800 focus::bg-ja-purple-800 border-2 border-white",
-        text: "text-white",
-      },
-      grey: {
-        button: "bg-[#32313a] hover:bg-[#2a2930] border-2 border-transparent",
-        text: "text-white",
-      },
-      white: {
-        button: "bg-white hover:bg-white/80 border-2 border-transparent",
-        text: "text-[#16151F]",
-      },
-    };
+  const colors: Record<ButtonProps["color"], { button: string; text: string }> = {
+    "light-purple": {
+      button: "bg-[#9849f5] hover:bg-[#9045e6] border-2 border-transparent",
+      text: "text-white",
+    },
+    purple: {
+      button: "bg-[#8A30F4] hover:bg-[#5A19A7] focus::bg-[#5A19A7] border-2 border-white",
+      text: "text-white",
+    },
+    grey: {
+      button: "bg-[#32313a] hover:bg-[#2a2930] border-2 border-transparent",
+      text: "text-white",
+    },
+    white: {
+      button: "bg-white hover:bg-white/80 border-2 border-transparent",
+      text: "text-[#16151F]",
+    },
+  };
 
-  const dimensions: Record<
-    Exclude<ButtonProps["size"], undefined>,
-    { button: string; text: string }
-  > = {
+  const dimensions: Record<Exclude<ButtonProps["size"], undefined>, { button: string; text: string }> = {
     sm: {
       button: "",
       text: "text-xs leading-[18px]",

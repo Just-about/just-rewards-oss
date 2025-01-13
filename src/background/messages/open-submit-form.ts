@@ -7,10 +7,7 @@ export type OpenSubmitFormRequest = {
 
 export type OpenSubmitFormResponse = MessageResponse<string>;
 
-const handler: PlasmoMessaging.MessageHandler<
-  OpenSubmitFormRequest,
-  OpenSubmitFormResponse
-> = async (req, res) => {
+const handler: PlasmoMessaging.MessageHandler<OpenSubmitFormRequest, OpenSubmitFormResponse> = async (req, res) => {
   if (!req.body) {
     res.send({
       error: {

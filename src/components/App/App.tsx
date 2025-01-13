@@ -34,9 +34,7 @@ export const AppWrapper = ({
       <ErrorBoundary fallbackRender={fallbackRender}>
         <Header onClose={onClose} />
 
-        <div className={classNames("h-[476px] overflow-hidden", className)}>
-          {children}
-        </div>
+        <div className={classNames("h-[476px] overflow-hidden", className)}>{children}</div>
 
         <UserInfo className="h-[72px]" />
       </ErrorBoundary>

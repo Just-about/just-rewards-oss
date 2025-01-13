@@ -1,4 +1,1 @@
-module.exports = {
-    singleQuote: false,
-    semi: true,
-};
+module.exports = require("@ja-packages/config/prettier.config.js");

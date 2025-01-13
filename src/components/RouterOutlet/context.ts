@@ -22,7 +22,5 @@ const defaultRouterContextValues: RouterContextType = {
   openExternalUrl: () => {},
 };
 
-export const RouterContext = createContext<RouterContextType>(
-  defaultRouterContextValues
-);
+export const RouterContext = createContext<RouterContextType>(defaultRouterContextValues);
 export const useRouter = () => useContext(RouterContext);

@@ -4,15 +4,9 @@ import { RouterOutletProps } from "./RouterOutlet";
 import { ANIMATION_DURATION } from "./consts";
 import { RouterContext } from "./context";
 
-export const RouterProvider = ({
-  routes,
-  children,
-  entrypoint,
-}: RouterOutletProps) => {
+export const RouterProvider = ({ routes, children, entrypoint }: RouterOutletProps) => {
   const [history, setHistory] = useState<string[]>(entrypoint || ["/"]);
-  const [cursor, setCursor] = useState<number>(
-    entrypoint ? entrypoint.length - 1 : 0
-  );
+  const [cursor, setCursor] = useState<number>(entrypoint ? entrypoint.length - 1 : 0);
 
   const push = useCallback(
     (path: string) => {
@@ -38,9 +32,7 @@ export const RouterProvider = ({
     // eslint-disable-next-line @typescript-eslint/no-shadow
     (paths: string[], cursor?: number) => {
       return new Promise<void>((res) => {
-        const uniquePaths = paths.filter(
-          (item, idx, arr) => arr.indexOf(item) === idx
-        );
+        const uniquePaths = paths.filter((item, idx, arr) => arr.indexOf(item) === idx);
 
         // Overwrite the history
         setHistory(uniquePaths);
@@ -52,10 +44,7 @@ export const RouterProvider = ({
     [history, cursor]
   );
 
-  const openExternalUrl = useCallback(
-    (url: string) => window.open(`${url}?referrer=jrx`, "_blank"),
-    [window]
-  );
+  const openExternalUrl = useCallback((url: string) => window.open(`${url}?referrer=jrx`, "_blank"), [window]);
 
   const contextState = useMemo(
     () => ({
@@ -70,9 +59,5 @@ export const RouterProvider = ({
     [push, pop, cursor, history, navigate, routes, openExternalUrl]
   );
 
-  return (
-    <RouterContext.Provider value={contextState}>
-      {children}
-    </RouterContext.Provider>
-  );
+  return <RouterContext.Provider value={contextState}>{children}</RouterContext.Provider>;
 };

@@ -54,33 +54,19 @@ export const BountyListItem = ({
       onClick={handleClick}
     >
       {submissionType === "text" && (
-        <SubmissionIcon
-          backgroundHex="#227EFA"
-          icon={QuoteIconSolid}
-          iconClassName="rotate-180"
-        />
+        <SubmissionIcon backgroundHex="#227EFA" icon={QuoteIconSolid} iconClassName="rotate-180" />
       )}
-      {submissionType === "image" && (
-        <SubmissionIcon backgroundHex="#09D380" icon={ImageIconSolid} />
-      )}
-      {submissionType === "video" && (
-        <SubmissionIcon backgroundHex="#8A30F4" icon={FilmIconSolid} />
-      )}
-      {submissionType === "link" && (
-        <SubmissionIcon backgroundHex="#43415F" icon={LinkIconSolid} />
-      )}
+      {submissionType === "image" && <SubmissionIcon backgroundHex="#09D380" icon={ImageIconSolid} />}
+      {submissionType === "video" && <SubmissionIcon backgroundHex="#8A30F4" icon={FilmIconSolid} />}
+      {submissionType === "link" && <SubmissionIcon backgroundHex="#43415F" icon={LinkIconSolid} />}
 
       <div className="ml-3">
-        <p className="text-white font-['Poppins'] font-semibold text-[16px] leading-tight mb-1 pr-2">
-          {title}
-        </p>
+        <p className="text-white font-['Poppins'] font-semibold text-[16px] leading-tight mb-1 pr-2">{title}</p>
 
-        <p className="text-white/[0.6] font-['SourceSans3'] text-[12px] leading-[120%]">
-          in {communityName}
-        </p>
+        <p className="text-white/[0.6] font-['SourceSans3'] text-[12px] leading-[120%]">in {communityName}</p>
       </div>
 
-      <div className=" flex items-center grow justify-end">
+      <div className="flex items-center grow justify-end">
         <div
           className={classNames(
             className,
@@ -89,13 +75,9 @@ export const BountyListItem = ({
           )}
         >
           <p className="text-left mt-[5px]">
-            <span className="text-[24px] leading-[100%] font-['Poppins'] text-[#F8B820] font-[400]">
-              $
-            </span>
+            <span className="text-[24px] leading-[100%] font-['Poppins'] text-[#F8B820] font-[400]">$</span>
 
-            <span className="text-[24px] leading-[100%] font-['Poppins'] font-semibold text-white">
-              {reward}
-            </span>
+            <span className="text-[24px] leading-[100%] font-['Poppins'] font-semibold text-white">{reward}</span>
           </p>
         </div>
       </div>

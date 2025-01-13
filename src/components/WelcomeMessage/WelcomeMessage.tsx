@@ -17,9 +17,7 @@ export const WelcomeMessage = () => {
       },
       type: EventType.JRX_BUTTON_CLICKED,
     });
-    router.openExternalUrl(
-      "https://justabout.com/?tag=bounty&tag=platform-rewards"
-    );
+    router.openExternalUrl("https://justabout.com/?tag=bounty");
   }, [router]);
 
   return (
@@ -29,19 +27,11 @@ export const WelcomeMessage = () => {
         <br /> create and earn
       </h1>
 
-      <p
-        data-testid="welcome-message"
-        className="font-['SourceSans3'] text-[16px] leading-[120%] text-white mb-4"
-      >
+      <p data-testid="welcome-message" className="font-['SourceSans3'] text-[16px] leading-[120%] text-white mb-4">
         Share your knowledge, skills, and passion to get your just rewards!
       </p>
 
-      <Button
-        size="md"
-        color="purple"
-        onClick={handleViewAllRewards}
-        iconLeft={CircleRightArrowSolid}
-      >
+      <Button size="md" color="purple" onClick={handleViewAllRewards} iconLeft={CircleRightArrowSolid}>
         View all rewards
       </Button>
     </div>

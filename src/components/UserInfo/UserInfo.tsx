@@ -80,9 +80,7 @@ export const UserInfo = ({ className }: UserInfoProps) => {
       },
       type: EventType.JRX_BUTTON_CLICKED,
     });
-    router.openExternalUrl(
-      `${process.env.PLASMO_PUBLIC_SITE_URL}/activity/earnings`
-    );
+    router.openExternalUrl(`${process.env.PLASMO_PUBLIC_SITE_URL}/activity/earnings`);
   }, [router]);
 
   const handleViewProfile = useCallback(async () => {
@@ -94,9 +92,7 @@ export const UserInfo = ({ className }: UserInfoProps) => {
       },
       type: EventType.JRX_BUTTON_CLICKED,
     });
-    router.openExternalUrl(
-      `${process.env.PLASMO_PUBLIC_SITE_URL}/user/${user.username}`
-    );
+    router.openExternalUrl(`${process.env.PLASMO_PUBLIC_SITE_URL}/user/${user.username}`);
   }, [router, user]);
 
   const wrapperClassName = useMemo(
@@ -153,9 +149,7 @@ export const UserInfo = ({ className }: UserInfoProps) => {
                   style={{ backgroundColor: avatarColors?.background }}
                 >
                   <span
-                    className={classNames(
-                      "font-['Poppins'] font-bold m-auto text-center brightness-75 text-md"
-                    )}
+                    className={classNames("font-['Poppins'] font-bold m-auto text-center brightness-75 text-base")}
                     style={{ color: avatarColors?.foreground }}
                   >
                     {initials}
@@ -179,16 +173,10 @@ export const UserInfo = ({ className }: UserInfoProps) => {
             role="presentation"
             onKeyDown={() => {}}
           >
-            <p className="text-[12px] text-right text-white/[0.6] leading-[130%]">
-              My balance
-            </p>
+            <p className="text-[12px] text-right text-white/[0.6] leading-[130%]">My balance</p>
             <p className="text-right">
-              <span className="text-[24px] leading-tight font-['Poppins'] text-[#F8B820] font-[400]">
-                $
-              </span>
-              <span className="text-[26px] leading-tight font-['Poppins'] font-bold text-white">
-                {balance || 0}
-              </span>
+              <span className="text-[24px] leading-tight font-['Poppins'] text-[#F8B820] font-[400]">$</span>
+              <span className="text-[26px] leading-tight font-['Poppins'] font-bold text-white">{balance || 0}</span>
             </p>
           </div>
         </>

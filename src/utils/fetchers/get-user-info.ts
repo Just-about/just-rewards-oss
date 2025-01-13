@@ -21,9 +21,7 @@ export const getUserInfo = async (): Promise<UserInfo | null> => {
   const storedBalance = await getStoredData<string>(STORAGE_KEYS.USER_BALANCE);
   const storedUser = await getStoredData<UserType>(STORAGE_KEYS.USER_DATA);
   if (storedBalance && storedUser) {
-    const decodedToken = jwtDecode<{ "https://justabout.com/email"?: string }>(
-      accessToken
-    );
+    const decodedToken = jwtDecode<{ "https://justabout.com/email"?: string }>(accessToken);
     if (storedUser.email === decodedToken["https://justabout.com/email"]) {
       return {
         balance: Number(storedBalance),

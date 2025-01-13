@@ -10,10 +10,10 @@ export type GetTriggerUrlsRequest = {
 };
 export type GetTriggerUrlsResponse = JrxTriggerUrl[];
 
-const handler: PlasmoMessaging.MessageHandler<
-  GetTriggerUrlsRequest,
-  MessageResponse<GetTriggerUrlsResponse>
-> = async (req, res) => {
+const handler: PlasmoMessaging.MessageHandler<GetTriggerUrlsRequest, MessageResponse<GetTriggerUrlsResponse>> = async (
+  req,
+  res
+) => {
   if (!req.body) {
     res.send({
       error: {
@@ -24,12 +24,9 @@ const handler: PlasmoMessaging.MessageHandler<
     return;
   }
 
-  const [error, data] = await clientTRPCQuery(
-    trpc.bounties.listJrxUrlTriggers,
-    {
-      filter: { bountyIDs: req.body.bountyIDs },
-    }
-  );
+  const [error, data] = await clientTRPCQuery(trpc.bounties.listJrxUrlTriggers, {
+    filter: { bountyIDs: req.body.bountyIDs },
+  });
 
   if (error) {
     res.send({

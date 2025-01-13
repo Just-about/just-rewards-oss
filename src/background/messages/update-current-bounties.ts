@@ -32,10 +32,7 @@ const handler: PlasmoMessaging.MessageHandler<
   }
 
   // store the current bounty, so it can be accessed by the extension popup
-  await setStoredData(
-    STORAGE_KEYS.CURRENT_BOUNTIES,
-    req.body.ids ? req.body.ids.join(",") : ""
-  );
+  await setStoredData(STORAGE_KEYS.CURRENT_BOUNTIES, req.body.ids ? req.body.ids.join(",") : "");
 
   const tabId = await chrome.tabs
     .query({ active: true, currentWindow: true })

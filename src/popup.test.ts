@@ -11,10 +11,7 @@ describe("Extension", () => {
 
     browser = await launch({
       headless: false, // extension are allowed only in the head-full mode
-      args: [
-        `--disable-extensions-except=${extensionPath}`,
-        `--load-extension=${extensionPath}`,
-      ],
+      args: [`--disable-extensions-except=${extensionPath}`, `--load-extension=${extensionPath}`],
     });
 
     await new Promise((r) => {
@@ -23,9 +20,7 @@ describe("Extension", () => {
 
     // Find the extension id
     const targets = browser.targets();
-    const extensionTarget = targets.find(
-      (target) => target.type() === "service_worker"
-    );
+    const extensionTarget = targets.find((target) => target.type() === "service_worker");
     const partialExtensionUrl = extensionTarget?.url() || "";
     const [, , extensionId] = partialExtensionUrl.split("/");
 
@@ -44,8 +39,6 @@ describe("Extension", () => {
     const element = await ex.waitForSelector('[data-testid="welcome-message"]');
     const value = await element?.evaluate((el) => el.textContent);
 
-    expect(value).toEqual(
-      "Share your knowledge, skills and passion to get your just rewards!"
-    );
+    expect(value).toEqual("Share your knowledge, skills and passion to get your just rewards!");
   });
 });

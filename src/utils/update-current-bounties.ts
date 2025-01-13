@@ -5,11 +5,6 @@ import type {
   UpdateCurrentBountiesResponse,
 } from "~background/messages/update-current-bounties";
 
-export const updateCurrentBounties = async ({
-  ids,
-}: { ids?: number[] } = {}): Promise<void> => {
-  backgroundMessage<
-    UpdateCurrentBountiesRequest,
-    UpdateCurrentBountiesResponse
-  >("update-current-bounties", { ids });
+export const updateCurrentBounties = async ({ ids }: { ids?: number[] } = {}): Promise<void> => {
+  backgroundMessage<UpdateCurrentBountiesRequest, UpdateCurrentBountiesResponse>("update-current-bounties", { ids });
 };

@@ -1,7 +1,4 @@
-import {
-  ListBountiesRequest,
-  ListBountiesResponse,
-} from "~background/messages/list-bounties";
+import { ListBountiesRequest, ListBountiesResponse } from "~background/messages/list-bounties";
 import { backgroundMessage } from "~utils/messages/background-message";
 
 import type { JrxBounty } from "@ja-packages/types/jarb";
@@ -23,10 +20,7 @@ export const listBounties = async ({
 
   if (url) body.filter = { url };
 
-  const { bounties } = await backgroundMessage<
-    ListBountiesRequest,
-    ListBountiesResponse
-  >("list-bounties", body);
+  const { bounties } = await backgroundMessage<ListBountiesRequest, ListBountiesResponse>("list-bounties", body);
 
   return bounties;
 };

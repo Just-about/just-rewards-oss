@@ -28,12 +28,7 @@ export const Header = ({ onClose }: HeaderProps) => {
   }, [router]);
 
   return (
-    <div
-      className={classNames(
-        "bg-[#16151F] flex flex-row items-center justify-between",
-        "pt-3 pb-2 px-5"
-      )}
-    >
+    <div className={classNames("bg-[#16151F] flex flex-row items-center justify-between", "pt-3 pb-2 px-5")}>
       <img
         alt="just about logo"
         className="h-[30px] w-auto relative -left-[4px] top-[2px] hover:cursor-pointer"

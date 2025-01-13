@@ -1,7 +1,4 @@
-import {
-  GetBountyRequest,
-  GetBountyResponse,
-} from "~background/messages/get-bounty";
+import { GetBountyRequest, GetBountyResponse } from "~background/messages/get-bounty";
 import { backgroundMessage } from "~utils/messages/background-message";
 
 import type { JrxBounty } from "@ja-packages/types/jarb";

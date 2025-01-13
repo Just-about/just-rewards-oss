@@ -6,10 +6,7 @@ import { MAX_BOUNTIES } from "~pages/BountyListPage";
 export const BountyListSkeleton = ({ rows }: { rows?: number }) => {
   const count = rows || MAX_BOUNTIES;
 
-  const widths = useMemo(
-    () => Array.from({ length: count }).map(() => 150 * Math.random() + 50),
-    [count]
-  );
+  const widths = useMemo(() => Array.from({ length: count }).map(() => 150 * Math.random() + 50), [count]);
 
   return (
     <div className="space-y-4 pl-5 py-4">

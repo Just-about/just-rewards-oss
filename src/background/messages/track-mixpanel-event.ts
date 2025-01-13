@@ -24,10 +24,7 @@ const handler: PlasmoMessaging.MessageHandler<
     return;
   }
 
-  const [error] = await clientTRPCQuery(
-    trpc.tracking.trackEvent,
-    req.body.event
-  );
+  const [error] = await clientTRPCQuery(trpc.tracking.trackEvent, req.body.event);
 
   if (error) {
     res.send({

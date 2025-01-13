@@ -12,10 +12,7 @@ interface TabberProps {
 export const Tabber = ({ tabs }: TabberProps) => {
   const [selectedTabId, setSelectedTabId] = useState<string | null>(null);
   const activeTabID = useMemo(
-    () =>
-      tabs && tabs.length > 0 && selectedTabId === null
-        ? tabs[0].id
-        : selectedTabId,
+    () => (tabs && tabs.length > 0 && selectedTabId === null ? tabs[0].id : selectedTabId),
     [selectedTabId, tabs]
   );
   const activeTabContent = useMemo(() => {
@@ -33,13 +30,10 @@ export const Tabber = ({ tabs }: TabberProps) => {
         {(tabs?.length || 0) > 1 ? (
           tabs?.map(({ content, id, label }) => (
             <div
-              className={classNames(
-                "flex items-center mr-5 h-full border-b-2",
-                {
-                  "border-white": activeTabID === id,
-                  "border-transparent": activeTabID !== id,
-                }
-              )}
+              className={classNames("flex items-center mr-5 h-full border-b-2", {
+                "border-white": activeTabID === id,
+                "border-transparent": activeTabID !== id,
+              })}
               key={id}
             >
               <button
@@ -63,9 +57,7 @@ export const Tabber = ({ tabs }: TabberProps) => {
         )}
       </div>
 
-      {activeTabContent && (
-        <div className="fade-in-animation">{activeTabContent}</div>
-      )}
+      {activeTabContent && <div className="fade-in-animation">{activeTabContent}</div>}
     </>
   );
 };

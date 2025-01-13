@@ -36,10 +36,7 @@ interface ShadowDOMNotificationProps {
   openBountyDetails: (bountyIDs: number[]) => void;
 }
 
-export const ShadowDOMNotification = ({
-  currentURL,
-  openBountyDetails,
-}: ShadowDOMNotificationProps) => {
+export const ShadowDOMNotification = ({ currentURL, openBountyDetails }: ShadowDOMNotificationProps) => {
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [bountyIDs, setBountyIDs] = useState<number[]>([]);
   const [rewardsAvailable, setRewardsAvailable] = useState<number>(0);
@@ -47,9 +44,7 @@ export const ShadowDOMNotification = ({
   // We have to wait until the fade out animation has completed before disabling the shadow DOM
   // element is removed from the page. If `animationState` is set to `Hiding`, the notification
   // will begin to fade out.
-  const [animationState, setAnimationState] = useState<AnimationState>(
-    AnimationState.Showing
-  );
+  const [animationState, setAnimationState] = useState<AnimationState>(AnimationState.Showing);
 
   const [isHidden, setIsHidden] = useState(true);
 
@@ -61,10 +56,7 @@ export const ShadowDOMNotification = ({
   const [lifetime, setLifetime] = useState(NOTIFICATION_LIFETIME_SECONDS);
   const lifetimeRef = useRef(NOTIFICATION_LIFETIME_SECONDS);
 
-  const domain = useMemo(
-    () => (currentURL ? new URL(currentURL).hostname : ""),
-    [currentURL]
-  );
+  const domain = useMemo(() => (currentURL ? new URL(currentURL).hostname : ""), [currentURL]);
 
   const countdownInterval = useRef<SetInterval>(undefined);
 
@@ -78,9 +70,7 @@ export const ShadowDOMNotification = ({
   const updateDomainCooldown = useCallback(async () => {
     if (!domain) return;
     const expiration = getDismissalExpiration();
-    const dismissals = await getStoredData<DismissalData>(
-      STORAGE_KEYS.DISMISSED_NOTIFICATION
-    );
+    const dismissals = await getStoredData<DismissalData>(STORAGE_KEYS.DISMISSED_NOTIFICATION);
 
     const newDismissalData = {
       ...dismissals,
@@ -116,9 +106,7 @@ export const ShadowDOMNotification = ({
 
       const resp = await listTriggeredBounties({ url });
       const ids = resp.bounties.map((bounty) => bounty.id);
-      const dismissals = await getStoredData<DismissalData>(
-        STORAGE_KEYS.DISMISSED_NOTIFICATION
-      );
+      const dismissals = await getStoredData<DismissalData>(STORAGE_KEYS.DISMISSED_NOTIFICATION);
 
       setBountyIDs(ids);
       setRewardsAvailable(resp.rewardsAvailable);
@@ -144,8 +132,7 @@ export const ShadowDOMNotification = ({
   );
 
   const notifyChangeInCurrentBounties = useCallback(
-    (ids: number[]) =>
-      updateCurrentBounties({ ids: ids?.length ? ids : undefined }),
+    (ids: number[]) => updateCurrentBounties({ ids: ids?.length ? ids : undefined }),
     [currentURL]
   );
 
@@ -208,12 +195,7 @@ export const ShadowDOMNotification = ({
     const isCoolingDownOnProduction = isDomainOnCooldown
         && process.env.NODE_ENV === "production";
 
-    return (
-      isLoading ||
-      isHidden ||
-      bountyIDs.length === 0 ||
-      isCoolingDownOnProduction
-    );
+    return isLoading || isHidden || bountyIDs.length === 0 || isCoolingDownOnProduction;
   }, [isLoading, bountyIDs, isHidden, isDomainOnCooldown]);
 
   // Capture the fact that the notification opened, only once on mount
@@ -237,39 +219,27 @@ export const ShadowDOMNotification = ({
     <div
       className={classNames(
         "min-h-[99px] max-w-[340px] flex items-center fixed top-5 right-5 p-3",
-        animationState === AnimationState.Hiding
-          ? "fade-out-animation"
-          : "slide-up-animation",
+        animationState === AnimationState.Hiding ? "fade-out-animation" : "slide-up-animation",
         "flex px-4 bg-[#8A30F4]",
-        "rounded-2xl text-white shadow-2xl"
+        "rounded-[18px] text-white shadow-2xl"
       )}
     >
       <div className="flex flex-row">
-        <div className="bg-white/80 min-w-8 max-w-8 min-h-8 max-h-8 flex items-center justify-center rounded-lg mr-3">
-          <BellRingIconSolid
-            style={{ color: "#8A30F4", height: "16px" }}
-            className="rotate-12"
-          />
+        <div className="bg-white/80 min-w-8 max-w-8 min-h-8 max-h-8 flex items-center justify-center rounded-xl mr-3">
+          <BellRingIconSolid style={{ color: "#8A30F4", height: "16px" }} className="rotate-12" />
         </div>
 
         <div className="flex flex-col relative">
           <div className="w-full pr-[24px]">
-            <p className="text-xs mb-0 font-['SourceSans3'] opacity-60">
-              {domain.replace(/^www\./, "")}
-            </p>
-            <p className="text-md leading-[19px] font-semibold mb-3 font-['Poppins']">
-              {`$${rewardsAvailable} reward${
-                bountyIDs.length > 1 ? "s" : ""
-              } available`}
+            <p className="text-xs mb-0 font-['SourceSans3'] opacity-60">{domain.replace(/^www\./, "")}</p>
+            <p className="text-base leading-[19px] font-semibold mb-3 font-['Poppins']">
+              {`$${rewardsAvailable} reward${bountyIDs.length > 1 ? "s" : ""} available`}
             </p>
           </div>
 
           <div className="flex">
             <ViewButton handleClick={showShadowDOMApp} />
-            <DismissButton
-              handleClick={handleDismissNotificationClick}
-              lifetime={lifetime}
-            />
+            <DismissButton handleClick={handleDismissNotificationClick} lifetime={lifetime} />
           </div>
         </div>
       </div>

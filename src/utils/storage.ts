@@ -35,11 +35,7 @@ export async function getStoredData<T>(key: StorageKey): Promise<T | null> {
 const ONE_YEAR = 1000 * 60 * 60 * 24 * 265;
 
 // Stores data with a given key and expiration time
-export async function setStoredData<T>(
-  key: StorageKey,
-  data: T,
-  ttl?: number
-): Promise<void> {
+export async function setStoredData<T>(key: StorageKey, data: T, ttl?: number): Promise<void> {
   const expirationTime = Date.now() + (ttl || ONE_YEAR);
   const itemToStore: StoredData<T> = { data, expires: expirationTime };
   await storage.set(key, JSON.stringify(itemToStore));

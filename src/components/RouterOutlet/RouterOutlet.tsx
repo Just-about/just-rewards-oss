@@ -17,7 +17,7 @@ export type RouterOutletProps = {
 
 export const NotFound = ({ children }: { children: React.ReactNode }) => (
   <div className={classNames(containerClasses, "mb-4 p-5")}>
-    <p className="text-white text-lg">Not Found: {children}</p>
+    <p className="text-white text-xl">Not Found: {children}</p>
   </div>
 );
 
@@ -25,11 +25,7 @@ export const RouterOutlet = () => {
   const { cursor, history, routes, pop, push } = useRouter();
 
   const matchers: Array<[route: Route, component: FC]> = useMemo(
-    () =>
-      Object.entries(routes).map(([route, component]) => [
-        new Route(route),
-        component,
-      ]),
+    () => Object.entries(routes).map(([route, component]) => [new Route(route), component]),
     [routes]
   );
 
@@ -48,19 +44,11 @@ export const RouterOutlet = () => {
               Pop
             </Button>
 
-            <Button
-              color="purple"
-              onClick={() => push("/bounties/list/1,2,3")}
-              size="sm"
-            >
+            <Button color="purple" onClick={() => push("/bounties/list/1,2,3")} size="sm">
               /bounties/list/1
             </Button>
 
-            <Button
-              color="purple"
-              onClick={() => push("/bounties/list/2")}
-              size="sm"
-            >
+            <Button color="purple" onClick={() => push("/bounties/list/2")} size="sm">
               /bounties/list/1,2,3
             </Button>
           </div>
@@ -85,9 +73,7 @@ export const RouterOutlet = () => {
               ? Object.fromEntries(
                   Object.entries(match).map(([key, value]) => {
                     const splitValue = value.split(",");
-                    return splitValue.length > 1
-                      ? [key, splitValue]
-                      : [key, value];
+                    return splitValue.length > 1 ? [key, splitValue] : [key, value];
                   })
                 )
               : false;

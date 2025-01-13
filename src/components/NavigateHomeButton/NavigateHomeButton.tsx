@@ -6,9 +6,7 @@ import { useRouter } from "~components/RouterOutlet";
 
 type NavigateHomeButtonProps = { borderless?: boolean };
 
-export const NavigateHomeButton = ({
-  borderless = false,
-}: NavigateHomeButtonProps) => {
+export const NavigateHomeButton = ({ borderless = false }: NavigateHomeButtonProps) => {
   const router = useRouter();
 
   return (
@@ -32,9 +30,7 @@ export const NavigateHomeButton = ({
         role="presentation"
       >
         <ArrowLeftIconSolid />
-        <span className="pl-1 cursor-pointer select-none font-['Poppins'] font-semibold">
-          Home
-        </span>
+        <span className="pl-1 cursor-pointer select-none font-['Poppins'] font-semibold">Home</span>
       </div>
     </div>
   );

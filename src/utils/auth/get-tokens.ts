@@ -1,15 +1,9 @@
 import { backgroundMessage } from "~utils/messages/background-message";
 
-import type {
-  GetCookiesRequest,
-  GetCookiesResponse,
-} from "~background/messages/get-cookies";
+import type { GetCookiesRequest, GetCookiesResponse } from "~background/messages/get-cookies";
 
 export const getTokens = async () => {
-  const cookies = await backgroundMessage<
-    GetCookiesRequest,
-    GetCookiesResponse
-  >("get-cookies", {}, []);
+  const cookies = await backgroundMessage<GetCookiesRequest, GetCookiesResponse>("get-cookies", {}, []);
 
   return Object.fromEntries(
     cookies

@@ -7,10 +7,10 @@ export type DeleteTokensResponse = {
 
 const BASE_URL = process.env.PLASMO_PUBLIC_SITE_URL;
 
-const handler: PlasmoMessaging.MessageHandler<
-  DeleteTokensRequest,
-  MessageResponse<DeleteTokensResponse>
-> = async (_, res) => {
+const handler: PlasmoMessaging.MessageHandler<DeleteTokensRequest, MessageResponse<DeleteTokensResponse>> = async (
+  _,
+  res
+) => {
   const response = await fetch(`${BASE_URL}/auth/sign-out`);
 
   res.send({

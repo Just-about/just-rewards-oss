@@ -26,12 +26,9 @@ const handler: PlasmoMessaging.MessageHandler<
     return;
   }
 
-  const [error, data] = await clientTRPCQuery(
-    trpc.bounties.batchGetJrxBounties,
-    {
-      ids: req.body.ids,
-    }
-  );
+  const [error, data] = await clientTRPCQuery(trpc.bounties.batchGetJrxBounties, {
+    ids: req.body.ids,
+  });
 
   if (error) {
     res.send({

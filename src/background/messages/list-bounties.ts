@@ -16,10 +16,10 @@ export type ListBountiesResponse = {
   bounties: JrxBounty[];
 };
 
-const handler: PlasmoMessaging.MessageHandler<
-  ListBountiesRequest,
-  MessageResponse<ListBountiesResponse>
-> = async (req, res) => {
+const handler: PlasmoMessaging.MessageHandler<ListBountiesRequest, MessageResponse<ListBountiesResponse>> = async (
+  req,
+  res
+) => {
   if (!req.body) {
     res.send({
       error: {

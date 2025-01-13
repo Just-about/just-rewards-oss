@@ -14,20 +14,9 @@ export const ErrorPage = ({ onRetry }: ErrorPageProps) => {
   return (
     <div className="h-full place-content-center">
       <div className="flex justify-center mb-2">
-        <img
-          className={classNames("-rotate-6")}
-          src={grimace}
-          alt="Grimacing emoji"
-          width="112px"
-          height="112px"
-        />
+        <img className={classNames("-rotate-6")} src={grimace} alt="Grimacing emoji" width="112px" height="112px" />
       </div>
-      <div
-        className={classNames(
-          "flex justify-center",
-          "text-white font-['Poppins'] font-bold text-xl mx-6 mb-4"
-        )}
-      >
+      <div className={classNames("flex justify-center", "text-white font-['Poppins'] font-bold text-2xl/8 mx-6 mb-4")}>
         <p className="text-center">
           Uh oh!
           <br />
@@ -35,13 +24,7 @@ export const ErrorPage = ({ onRetry }: ErrorPageProps) => {
         </p>
       </div>
       <div className="flex justify-center">
-        <Button
-          color="white"
-          size="md"
-          onClick={onRetry}
-          iconLeft={RotateIconSolid}
-          className="rounded-[0.75rem]"
-        >
+        <Button color="white" size="md" onClick={onRetry} iconLeft={RotateIconSolid} className="rounded-[0.75rem]">
           Retry
         </Button>
       </div>

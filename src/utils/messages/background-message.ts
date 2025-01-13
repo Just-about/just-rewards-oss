@@ -2,13 +2,8 @@ import { MessagesMetadata, sendToBackground } from "@plasmohq/messaging";
 
 type MessageName = keyof MessagesMetadata;
 
-const returnOrThrow = <Res>(
-  message: string | undefined,
-  defaultResponse: Res | undefined,
-  name: MessageName
-): Res => {
-  if (defaultResponse === undefined)
-    throw new Error(message || `Failed to run background message \`${name}\``);
+const returnOrThrow = <Res>(message: string | undefined, defaultResponse: Res | undefined, name: MessageName): Res => {
+  if (defaultResponse === undefined) throw new Error(message || `Failed to run background message \`${name}\``);
   return defaultResponse;
 };
 

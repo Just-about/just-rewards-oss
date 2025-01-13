@@ -10,10 +10,10 @@ export type GetBountyRequest = {
 };
 export type GetBountyResponse = JrxBounty;
 
-const handler: PlasmoMessaging.MessageHandler<
-  GetBountyRequest,
-  MessageResponse<GetBountyResponse>
-> = async (req, res) => {
+const handler: PlasmoMessaging.MessageHandler<GetBountyRequest, MessageResponse<GetBountyResponse>> = async (
+  req,
+  res
+) => {
   if (!req.body) {
     res.send({
       error: {

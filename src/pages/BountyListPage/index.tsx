@@ -42,9 +42,7 @@ export const BountyListPage = ({ bountyIDs }: BountyListPageProps) => {
       const maximumNumberOfHotBounties = MAX_BOUNTIES - newBounties.length;
 
       const newHotBounties = fallbackBounties
-        .filter((newHotBounty) =>
-          newBounties.every((newBounty) => newBounty.id !== newHotBounty.id)
-        )
+        .filter((newHotBounty) => newBounties.every((newBounty) => newBounty.id !== newHotBounty.id))
         .slice(0, maximumNumberOfHotBounties);
 
       setBounties(newBounties);
@@ -115,9 +113,7 @@ export const BountyListPage = ({ bountyIDs }: BountyListPageProps) => {
 
       <div className="pl-5">
         <a
-          href={`${
-            process.env.PLASMO_PUBLIC_SITE_URL
-          }${NEXT_APP_PATHS.BOUNTIES_FEED()}`}
+          href={`${process.env.PLASMO_PUBLIC_SITE_URL}${NEXT_APP_PATHS.BOUNTIES_FEED()}`}
           target="_blank"
           rel="noreferrer"
         >

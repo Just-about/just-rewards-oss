@@ -27,9 +27,7 @@ export const config: PlasmoCSConfig = {
 const ShadowDOM = () => {
   const router = useRouter();
 
-  const [viewState, setViewState] = useState<"notification" | "app">(
-    "notification"
-  );
+  const [viewState, setViewState] = useState<"notification" | "app">("notification");
   const [isShadowDOMHidden, setIsShadowDOMHidden] = useState(true);
   const [isPopupOpen, setIsPopupOpen] = useState(false);
 
@@ -145,15 +143,10 @@ const ShadowDOM = () => {
   return (
     <div className="fixed top-5 right-5 visible">
       {viewState === "notification" && (
-        <ShadowDOMNotification
-          currentURL={currentURL}
-          openBountyDetails={handleOpenViewBountyClick}
-        />
+        <ShadowDOMNotification currentURL={currentURL} openBountyDetails={handleOpenViewBountyClick} />
       )}
 
-      {viewState === "app" && (
-        <ShadowDOMApp closeApp={() => setIsShadowDOMHidden(true)} />
-      )}
+      {viewState === "app" && <ShadowDOMApp closeApp={() => setIsShadowDOMHidden(true)} />}
     </div>
   );
 };

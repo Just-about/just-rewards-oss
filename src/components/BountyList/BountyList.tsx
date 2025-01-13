@@ -25,11 +25,7 @@ export const BountyList = ({ items, className }: BountyListProps) => {
   return (
     <div className={classNames("space-y-4 pl-5 py-4", className)}>
       {items.map((item) => (
-        <BountyListItem
-          {...item}
-          key={item.id}
-          className={bountyListItemClassName}
-        />
+        <BountyListItem {...item} key={item.id} className={bountyListItemClassName} />
       ))}
     </div>
   );

@@ -30,12 +30,9 @@ const handler: PlasmoMessaging.MessageHandler<
     return;
   }
 
-  const [error, resp] = await clientTRPCQuery(
-    trpc.bounties.listTriggeredJrxBounties,
-    {
-      filter: req.body.filter,
-    }
-  );
+  const [error, resp] = await clientTRPCQuery(trpc.bounties.listTriggeredJrxBounties, {
+    filter: req.body.filter,
+  });
 
   if (error) {
     res.send({

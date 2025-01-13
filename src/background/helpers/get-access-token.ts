@@ -9,15 +9,11 @@ export const getAccessToken = async (): Promise<string | null> => {
       domain: process.env.PLASMO_PUBLIC_SITE_DOMAIN,
     });
 
-    const hasRefreshToken = cookies.some(
-      (cookie: any) => cookie.name === COOKIES.refresh
-    );
+    const hasRefreshToken = cookies.some((cookie: any) => cookie.name === COOKIES.refresh);
 
     if (!hasRefreshToken) return null;
 
-    const storedAccessToken = cookies.find(
-      (cookie: any) => cookie.name === COOKIES.access
-    )?.value;
+    const storedAccessToken = cookies.find((cookie: any) => cookie.name === COOKIES.access)?.value;
 
     // If access token does not expire within the next 30 minutes, return access token
     if (accessTokenIsValid(storedAccessToken)) return storedAccessToken;

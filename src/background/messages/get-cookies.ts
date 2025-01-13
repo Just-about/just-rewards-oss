@@ -7,10 +7,10 @@ export type GetCookiesResponse = {
   value: string;
 }[];
 
-const handler: PlasmoMessaging.MessageHandler<
-  GetCookiesRequest,
-  MessageResponse<GetCookiesResponse>
-> = async (_, res) => {
+const handler: PlasmoMessaging.MessageHandler<GetCookiesRequest, MessageResponse<GetCookiesResponse>> = async (
+  _,
+  res
+) => {
   if (!chrome) {
     res.send({
       error: {
