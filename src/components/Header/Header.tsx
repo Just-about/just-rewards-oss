@@ -28,10 +28,10 @@ export const Header = ({ onClose }: HeaderProps) => {
   }, [router]);
 
   return (
-    <div className={classNames("bg-[#16151F] flex flex-row items-center justify-between", "pt-3 pb-2 px-5")}>
+    <div className={classNames("bg-[#16151F] flex flex-row items-center justify-between", "py-[20px] px-5")}>
       <img
         alt="just about logo"
-        className="h-[30px] w-auto relative -left-[4px] top-[2px] hover:cursor-pointer"
+        className="h-[22px] w-auto relative hover:cursor-pointer"
         src={logo}
         onClick={() =>
           // Scroll to the index page, keeping the history whilst we scroll back to the 0th page
@@ -46,11 +46,11 @@ export const Header = ({ onClose }: HeaderProps) => {
       <div className="flex justify-end items-center space-x-4">
         <BellIconSolid
           onClick={handleClickNotifications}
-          className="h-[16px] text-[#43415F] cursor-pointer hover:opacity-90"
+          className="h-[20px] text-neutral-600 cursor-pointer hover:opacity-90"
         />
 
         <XMarkIconRegular
-          className="cursor-pointer text-white h-[20px] w-auto hover:opacity-90"
+          className="cursor-pointer text-white h-[20px] w-auto hover:opacity-90 font-[900]"
           onClick={onClose || window.close}
         />
       </div>

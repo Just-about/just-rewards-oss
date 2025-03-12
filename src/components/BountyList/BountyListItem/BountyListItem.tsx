@@ -1,15 +1,10 @@
 import classNames from "classnames";
 import { useCallback, useMemo } from "react";
 
-import { FilmIconSolid } from "@ja-packages/icons/solid/Film";
-import { ImageIconSolid } from "@ja-packages/icons/solid/Image";
-import { LinkIconSolid } from "@ja-packages/icons/solid/Link";
-import { QuoteIconSolid } from "@ja-packages/icons/solid/Quote";
 import { formatCurrency } from "@ja-packages/utils/format";
 import { EventType } from "@ja-packages/utils/mixpanel";
 
 import { useRouter } from "~components/RouterOutlet";
-import { SubmissionIcon } from "~components/SubmissionIcon";
 import { trackEvent } from "~utils/fetchers";
 
 export interface BountyListItemProps {
@@ -20,6 +15,8 @@ export interface BountyListItemProps {
   id: number;
   className?: string | object;
 }
+
+const tagClass = "text-sm text-neutral-400 py-min px-xxxxs rounded-xxxs";
 
 export const BountyListItem = ({
   communityName,
@@ -50,36 +47,30 @@ export const BountyListItem = ({
   return (
     <button
       type="button"
-      className="flex flex-row items-center w-full text-left hover:opacity-90 cursor-pointer"
+      className="flex flex-row justify-between text-left hover:opacity-90 cursor-pointer w-full"
       onClick={handleClick}
     >
-      {submissionType === "text" && (
-        <SubmissionIcon backgroundHex="#227EFA" icon={QuoteIconSolid} iconClassName="rotate-180" />
-      )}
-      {submissionType === "image" && <SubmissionIcon backgroundHex="#09D380" icon={ImageIconSolid} />}
-      {submissionType === "video" && <SubmissionIcon backgroundHex="#8A30F4" icon={FilmIconSolid} />}
-      {submissionType === "link" && <SubmissionIcon backgroundHex="#43415F" icon={LinkIconSolid} />}
+      <div>
+        <p className="text-white font-['Basic Sans'] font-bold text-xl leading-tight mb-[8px] pr-2">{title}</p>
 
-      <div className="ml-3">
-        <p className="text-white font-['Poppins'] font-semibold text-[16px] leading-tight mb-1 pr-2">{title}</p>
-
-        <p className="text-white/[0.6] font-['SourceSans3'] text-[12px] leading-[120%]">in {communityName}</p>
+        <div className="flex gap-xl">
+          <p className={classNames(tagClass, "bg-purple-600/[0.20]")}>{communityName}</p>
+          <p className={classNames(tagClass, "bg-white/[0.08] capitalize")}>{submissionType}</p>
+        </div>
       </div>
 
-      <div className="flex items-center grow justify-end">
-        <div
-          className={classNames(
-            className,
+      <div
+        className={classNames(
+          className,
 
-            "flex items-center h-[44px] px-3.5 pr-2 bg-[#252435] border-l-2 border-y-2 border-white rounded-l-full"
-          )}
-        >
-          <p className="text-left mt-[5px]">
-            <span className="text-[24px] leading-[100%] font-['Poppins'] text-[#F8B820] font-[400]">$</span>
+          "flex items-center h-[44px] min-w-[75px] px-3.5 pr-2 bg-neutral-900 rounded-l-md ml-2"
+        )}
+      >
+        <p className="text-left mt-[5px]">
+          <span className="text-2xl leading-[100%] font-['Basic Sans'] text-caution-300 font-semibold">$</span>
 
-            <span className="text-[24px] leading-[100%] font-['Poppins'] font-semibold text-white">{reward}</span>
-          </p>
-        </div>
+          <span className="text-2xl leading-[100%] font-['Basic Sans'] font-semibold text-white">{reward}</span>
+        </p>
       </div>
     </button>
   );

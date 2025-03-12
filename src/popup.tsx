@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 
+import "@ja-packages/config/styles/shared.css";
 import { EventType } from "@ja-packages/utils/mixpanel";
 
 import { App, AppWrapper } from "~components/App/App";

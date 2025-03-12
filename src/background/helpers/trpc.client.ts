@@ -23,15 +23,17 @@ const getDeviceID = async () => {
   return newDeviceID;
 };
 
-const createHeadersWithContext = async (headers?: Record<string, string>) => {
+const createHeadersWithContext = async (initialHeaders?: Record<string, string>) => {
   const accessToken = await getAccessToken();
   const deviceID = await getDeviceID();
 
-  return {
-    ...(headers || {}),
+  const requestHeaders = {
+    ...(initialHeaders || {}),
     "X-Device-Id": deviceID,
     ...(accessToken ? { Authorization: `Bearer ${accessToken}` } : {}),
   };
+
+  return requestHeaders;
 };
 
 export const clientTRPCQuery = async <
@@ -46,7 +48,7 @@ export const clientTRPCQuery = async <
   safeAsync(
     procedure.query(input, {
       context: {
-        headers: createHeadersWithContext(headers),
+        headers: await createHeadersWithContext(headers),
       },
     }) as TResult
   );
@@ -63,7 +65,7 @@ export const clientTRPCMutate = async <
   safeAsync(
     procedure.mutate(input, {
       context: {
-        headers: createHeadersWithContext(headers),
+        headers: await createHeadersWithContext(headers),
       },
     }) as TResult
   );

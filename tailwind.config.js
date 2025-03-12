@@ -5,6 +5,6 @@ module.exports = {
   ...sharedConfig,
   mode: "jit",
   darkMode: "class",
-  content: ["./**/*.tsx"],
+  content: ["./src/**/*.tsx"],
   plugins: [],
 };

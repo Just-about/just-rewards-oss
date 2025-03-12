@@ -13,7 +13,7 @@ interface AppProps extends PropsWithChildren {
 
 const fallbackRender = ({ error }: { error: Error }) => {
   return (
-    <div role="alert" className="font-sans p-4">
+    <div role="alert" className="font-['Basic Sans'] p-4">
       <p className="text-white">Something went wrong:</p>
       <pre className="text-red-600 overflow-scroll">{error.stack}</pre>
     </div>
@@ -30,13 +30,16 @@ export const AppWrapper = ({
   className?: string;
 }) => {
   return (
-    <div className="h-[600px] w-[340px] bg-[#16151F]">
+    <div
+      className="h-[600px] max-h-[600px] w-[340px] flex flex-col overflow-hidden"
+      style={{ background: "linear-gradient(180deg, #16151F 0%, #252435 100%)" }}
+    >
       <ErrorBoundary fallbackRender={fallbackRender}>
         <Header onClose={onClose} />
 
-        <div className={classNames("h-[476px] overflow-hidden", className)}>{children}</div>
+        <div className={classNames("flex-shrink overflow-hidden")}>{children}</div>
 
-        <UserInfo className="h-[72px]" />
+        <UserInfo className="flex-shrink-0 mt-auto" />
       </ErrorBoundary>
     </div>
   );

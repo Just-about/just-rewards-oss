@@ -25,8 +25,8 @@ export const Tabber = ({ tabs }: TabberProps) => {
   }, [activeTabID]);
 
   return (
-    <>
-      <div className="flex flex-row items-center border-y border-white/[0.08] px-5 h-[42px]">
+    <div className="flex flex-col h-full overflow-hidden items-stretch pb-[180px]">
+      <div className="flex flex-row items-center border-y border-white/[0.08] px-5 h-[42px] flex-shrink-0">
         {(tabs?.length || 0) > 1 ? (
           tabs?.map(({ content, id, label }) => (
             <div
@@ -37,10 +37,9 @@ export const Tabber = ({ tabs }: TabberProps) => {
               key={id}
             >
               <button
-                className={classNames(
-                  "font-['Poppins'] font-semibold text-white text-[14px] leading-[120%] select-none",
-                  { "opacity-50": activeTabID !== id }
-                )}
+                className={classNames("font-['Basic Sans'] text-base text-white leading-[120%] select-none", {
+                  "opacity-50": activeTabID !== id,
+                })}
                 onClick={() => setSelectedTabId(id)}
                 onKeyDown={() => setSelectedTabId(id)}
                 type="button"
@@ -57,7 +56,9 @@ export const Tabber = ({ tabs }: TabberProps) => {
         )}
       </div>
 
-      {activeTabContent && <div className="fade-in-animation">{activeTabContent}</div>}
-    </>
+      {activeTabContent && (
+        <div className="fade-in-animation overflow-hidden flex-shrink min-h-[0]">{activeTabContent}</div>
+      )}
+    </div>
   );
 };

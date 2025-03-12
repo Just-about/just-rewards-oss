@@ -19,11 +19,11 @@ export const ViewButton = ({ handleClick }: ViewButtonProps) => (
     <span
       className={twMerge(
         "text-[#16151F]",
-        "text-xs font-semibold font-['Poppins']",
+        "text-xs font-['Basic Sans'] font-semibold",
         "flex gap-[6px] items-center justify-center"
       )}
     >
-      <div className="rounded-full bg-[#8A30F4] w-[12px] h-[12px] flex items-center justify-center">
+      <div className="rounded-full bg-primary-800 w-[12px] h-[12px] flex items-center justify-center">
         <ArrowRightIconSolid className="text-white w-[8px] h-auto" />
       </div>
       View

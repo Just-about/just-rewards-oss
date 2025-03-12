@@ -220,19 +220,19 @@ export const ShadowDOMNotification = ({ currentURL, openBountyDetails }: ShadowD
       className={classNames(
         "min-h-[99px] max-w-[340px] flex items-center fixed top-5 right-5 p-3",
         animationState === AnimationState.Hiding ? "fade-out-animation" : "slide-up-animation",
-        "flex px-4 bg-[#8A30F4]",
+        "flex px-4 bg-primary-800",
         "rounded-[18px] text-white shadow-2xl"
       )}
     >
       <div className="flex flex-row">
         <div className="bg-white/80 min-w-8 max-w-8 min-h-8 max-h-8 flex items-center justify-center rounded-xl mr-3">
-          <BellRingIconSolid style={{ color: "#8A30F4", height: "16px" }} className="rotate-12" />
+          <BellRingIconSolid style={{ height: "16px" }} className="text-primary-800 rotate-12" />
         </div>
 
         <div className="flex flex-col relative">
           <div className="w-full pr-[24px]">
             <p className="text-xs mb-0 font-['SourceSans3'] opacity-60">{domain.replace(/^www\./, "")}</p>
-            <p className="text-base leading-[19px] font-semibold mb-3 font-['Poppins']">
+            <p className="text-base leading-[19px] font-['Basic Sans'] font-semibold mb-3">
               {`$${rewardsAvailable} reward${bountyIDs.length > 1 ? "s" : ""} available`}
             </p>
           </div>

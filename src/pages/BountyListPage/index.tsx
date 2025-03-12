@@ -8,7 +8,6 @@ import { BountyList } from "~components/BountyList";
 import { BountyListSkeleton } from "~components/BountyList/BountyListSkeleton";
 import { ErrorPage } from "~components/ErrorPage/ErrorPage";
 import { NavigateHomeButton } from "~components/NavigateHomeButton/NavigateHomeButton";
-import { NotFound } from "~components/RouterOutlet/RouterOutlet";
 import { batchGetBounties, listBounties } from "~utils/fetchers";
 
 import type { JrxBounty } from "@ja-packages/types/jarb";
@@ -72,7 +71,7 @@ export const BountyListPage = ({ bountyIDs }: BountyListPageProps) => {
         // eslint-disable-next-line no-nested-ternary
         isLoading ? (
           <BountyListSkeleton rows={2} />
-        ) : bounties.length > 0 ? (
+        ) : (
           <BountyList
             className="fade-in-animation"
             items={bounties.map((bounty) => ({
@@ -84,12 +83,10 @@ export const BountyListPage = ({ bountyIDs }: BountyListPageProps) => {
               title: bounty.title,
             }))}
           />
-        ) : (
-          <NotFound>Unable to find the list of bounties provided</NotFound>
         )
       }
 
-      {!isLoading && hotBounties.length > 0 && (
+      {!isLoading && (
         <div className="fade-in-animation">
           <div className="px-5 flex flex-row items-center w-full">
             <span className="shrink-1 grow-0 pr-2 select-none font-['Poppins'] text-[12px] text-white/[0.4]">
@@ -127,7 +124,7 @@ export const BountyListPage = ({ bountyIDs }: BountyListPageProps) => {
             <span
               className={classNames(
                 "text-sm text-white leading-[18px]",
-                "font-semibold flex gap-2 items-center justify-center font-['Poppins']"
+                "font-['Basic Sans'] flex gap-2 items-center justify-center"
               )}
             >
               <ArrowUpRightFromSquareIconSolid />

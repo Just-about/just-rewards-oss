@@ -6,3 +6,4 @@ export * from "./get-user";
 export * from "./list-bounties";
 export * from "./list-trending-bounties";
 export * from "./track-event";
+export * from "./toggle-bookmark";

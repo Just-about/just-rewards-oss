@@ -98,7 +98,7 @@ export const UserInfo = ({ className }: UserInfoProps) => {
   const wrapperClassName = useMemo(
     () =>
       classNames(
-        "flex flex-row items-center bg-[#252435] border-t border-white/[0.08] px-5 font-['SourceSans3']",
+        "h-[70px] flex flex-row items-center bg-[#252435] border-t border-white/[0.08] px-5 font-['SourceSans3']",
         "transition-opacity duration-300 ease-in",
         {
           "opacity-0": !isVisible,
@@ -140,16 +140,16 @@ export const UserInfo = ({ className }: UserInfoProps) => {
               {avatarUrl ? (
                 <img
                   alt="user avatar"
-                  className="rounded-full border border-[#43415F] w-[48px] h-[48px]"
+                  className="border border-[#43415F] size-[40px] rounded-[24px] object-cover"
                   src={avatarUrl}
                 />
               ) : (
                 <div
-                  className="aspect-1 max-w-full rounded-full flex items-center justify-center w-[48px] h-[48px]"
+                  className="aspect-1 max-w-full rounded-full flex items-center justify-center size-[40px]"
                   style={{ backgroundColor: avatarColors?.background }}
                 >
                   <span
-                    className={classNames("font-['Poppins'] font-bold m-auto text-center brightness-75 text-base")}
+                    className={classNames("font-['Basic Sans'] font-bold m-auto text-center brightness-75 text-base")}
                     style={{ color: avatarColors?.foreground }}
                   >
                     {initials}
@@ -157,12 +157,10 @@ export const UserInfo = ({ className }: UserInfoProps) => {
                 </div>
               )}
               <div className="pl-3">
-                <p className="font-['Poppins'] text-[18px] font-semibold text-white mb-0 leading-tight w-[150px] truncate">
+                <p className="font-['Basic Sans'] text-lg font-bold text-white mb-0 leading-tight w-[150px] truncate">
                   {user.displayName}
                 </p>
-                <p className="text-[16px] text-white/[0.6] mb-0 leading-[130%] font-['SourceSans3'] w-[150px] truncate">
-                  @{user.username}
-                </p>
+                <p className="text-sm text-white/[0.6] mb-0 leading-[130%] w-[150px] truncate">@{user.username}</p>
               </div>
             </div>
           </div>
@@ -173,10 +171,10 @@ export const UserInfo = ({ className }: UserInfoProps) => {
             role="presentation"
             onKeyDown={() => {}}
           >
-            <p className="text-[12px] text-right text-white/[0.6] leading-[130%]">My balance</p>
+            <p className="text-min text-right text-white/[0.6] leading-[130%]">My balance</p>
             <p className="text-right">
-              <span className="text-[24px] leading-tight font-['Poppins'] text-[#F8B820] font-[400]">$</span>
-              <span className="text-[26px] leading-tight font-['Poppins'] font-bold text-white">{balance || 0}</span>
+              <span className="text-2xl leading-tight font-['Basic Sans'] font-bold text-caution-300">$</span>
+              <span className="text-2xl leading-tight font-['Basic Sans'] font-bold text-white">{balance || 0}</span>
             </p>
           </div>
         </>

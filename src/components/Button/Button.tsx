@@ -10,14 +10,16 @@ type ButtonProps = {
   onClick?: () => void;
   className?: string;
   href?: string;
+  iconClassName?: string;
   iconLeft?: JAIcon;
   isDisabled?: boolean;
+  ghost?: boolean;
 } & PropsWithChildren;
 
-const ButtonWrapper = (props: Pick<ButtonProps, "href" | "children">) => {
+const ButtonWrapper = (props: Pick<ButtonProps, "href" | "children" | "className">) => {
   if (props.href)
     return (
-      <a href={props.href} target="_blank" rel="noreferrer">
+      <a href={props.href} target="_blank" rel="noreferrer" className={props.className}>
         {props.children}
       </a>
     );
@@ -33,20 +35,25 @@ export const Button = ({
   size = "md",
   href,
   iconLeft: IconLeft,
+  iconClassName,
   isDisabled,
+  ghost,
 }: ButtonProps) => {
-  const colors: Record<ButtonProps["color"], { button: string; text: string }> = {
+  const colors: Record<ButtonProps["color"], { button: string; text: string; icon?: string }> = {
     "light-purple": {
-      button: "bg-[#9849f5] hover:bg-[#9045e6] border-2 border-transparent",
+      button: ghost
+        ? "border-2 border-[#B882F8] group-hover/button:border-[#986ccd]"
+        : "bg-[#9849f5] hover:bg-[#9045e6] border-2 border-transparent",
       text: "text-white",
+      icon: ghost ? "text-[#B882F8] group-hover/button:opacity-80" : "",
     },
     purple: {
-      button: "bg-[#8A30F4] hover:bg-[#5A19A7] focus::bg-[#5A19A7] border-2 border-white",
-      text: "text-white",
+      button: "bg-[#6D22C5] hover:bg-[#6D22C5] focus::bg-[#5A19A7]",
+      text: "text-[#E7E6E9]",
     },
     grey: {
-      button: "bg-[#32313a] hover:bg-[#2a2930] border-2 border-transparent",
-      text: "text-white",
+      button: "bg-[#252435] hover:bg-[#2a2930]",
+      text: "text-[#E7E6E9]",
     },
     white: {
       button: "bg-white hover:bg-white/80 border-2 border-transparent",
@@ -56,12 +63,12 @@ export const Button = ({
 
   const dimensions: Record<Exclude<ButtonProps["size"], undefined>, { button: string; text: string }> = {
     sm: {
-      button: "",
-      text: "text-xs leading-[18px]",
+      button: "rounded-xl py-[12px] px-[16px]",
+      text: "text-base leading-none font-semibold",
     },
     md: {
-      button: "h-[41px] px-5",
-      text: "text-[14px] leading-[21px]",
+      button: "h-[40px] px-[16px]",
+      text: "text-[15px] leading-[21px]",
     },
   };
 
@@ -72,11 +79,11 @@ export const Button = ({
   }, [onClick, isDisabled]);
 
   return (
-    <ButtonWrapper href={isDisabled ? undefined : href}>
+    <ButtonWrapper href={isDisabled ? undefined : href} className="group/button">
       <button
         onClick={handleClick}
         className={twMerge(
-          "rounded-full py-2 px-5 flex items-center justify-center cursor-pointer transition-colors",
+          "rounded-[16px] py-2 px-5 flex items-center justify-center cursor-pointer transition-colors",
           classNames({ "cursor-not-allowed opacity-50": isDisabled }),
           colors[color].button,
           dimensions[size].button,
@@ -88,10 +95,10 @@ export const Button = ({
           className={twMerge(
             colors[color].text,
             dimensions[size].text,
-            "font-semibold flex gap-2 items-center justify-center font-['Poppins']"
+            "font-semibold flex gap-2 items-center justify-center font-display"
           )}
         >
-          {IconLeft && <IconLeft />}
+          {IconLeft && <IconLeft className={classNames("transition-colors", colors[color].icon)} />}
           {children}
         </span>
       </button>

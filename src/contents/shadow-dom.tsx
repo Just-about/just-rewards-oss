@@ -53,7 +53,7 @@ const ShadowDOM = () => {
     }, 5000);
   }, []);
 
-  // Open the Shadow DOM version of the app if user is on Just About
+  // Open the Shadow DOM version of the app if user is on Just
   // and `open-just-rewards` query string is 'true'
   useEffect(() => {
     const openJustRewards = async () => {
