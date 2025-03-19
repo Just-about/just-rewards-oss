@@ -14,7 +14,6 @@ import { useRouter } from "~components/RouterOutlet";
 import { NotFound } from "~components/RouterOutlet/RouterOutlet";
 import { Skeleton } from "~components/Skeleton/Skeleton";
 import { getBounty, trackEvent } from "~utils/fetchers";
-import { usePrevious } from "~utils/hooks/use-previous";
 
 import type { JrxBounty } from "@ja-packages/types/jarb";
 
@@ -81,13 +80,8 @@ export const BountyPage = ({ bountyID }: BountyPageProps) => {
     router.openExternalUrl(bounty.url);
   }, [router, bounty?.url]);
 
-  const previousBounty = usePrevious(bounty);
-  // Don't re-do the fade-in-animation when just re-fetching the same bounty
-  // as-is the case when performing a bookmark...
-  const animation = useMemo(
-    () => (previousBounty?.id === bounty?.id ? "" : "fade-in-animation"),
-    [previousBounty, bounty]
-  );
+  const [isBookmarked, setIsBookmarked] = useState(bounty?.isBookmarked || false);
+
   // For some reason, `capitalize` in the CSS is being overridden so it is capitalized using JS
   const preferredSubmissionType = useMemo(() => {
     if (!bounty) return "";
@@ -120,7 +114,7 @@ export const BountyPage = ({ bountyID }: BountyPageProps) => {
             className={classNames(
               "flex my-auto items-center justify-start",
               "p-sm bg-neutral-900 rounded-r-xl",
-              animation
+              "fade-in-animation"
             )}
           >
             <p className="text-right">
@@ -152,7 +146,8 @@ export const BountyPage = ({ bountyID }: BountyPageProps) => {
               <span
                 className={classNames(
                   "text-white text-3xl leading-[25.6px] font-['Basic Sans'] font-bold tracking-[-0.02em]",
-                  animation
+
+                  "fade-in-animation"
                 )}
               >
                 {bounty!.title}
@@ -171,7 +166,7 @@ export const BountyPage = ({ bountyID }: BountyPageProps) => {
                 <Skeleton className="h-[20px] w-56" />
               </div>
             ) : (
-              <span className={classNames("text-base leading-[19.2px] text-neutral-400", animation)}>
+              <span className={classNames("text-base leading-[19.2px] text-neutral-400", "fade-in-animation")}>
                 {bounty?.description}
               </span>
             )}
@@ -208,7 +203,9 @@ export const BountyPage = ({ bountyID }: BountyPageProps) => {
 
         {bounty && (
           <div className="flex flex-col mt-auto">
-            <div className={classNames("flex row gap-2 items-end h-full px-lg pt-xxxxs pb-[23px]", animation)}>
+            <div
+              className={classNames("flex row gap-2 items-end h-full px-lg pt-xxxxs pb-[23px]", "fade-in-animation")}
+            >
               <Button
                 color="purple"
                 onClick={() => {
@@ -234,8 +231,8 @@ export const BountyPage = ({ bountyID }: BountyPageProps) => {
               <BookmarkButton
                 communitySlug={bounty.community.slug}
                 postID={bounty.postID}
-                isBookmarked={bounty.isBookmarked}
-                onBookmark={loadBounty}
+                isBookmarked={isBookmarked}
+                onBookmark={() => setIsBookmarked(!isBookmarked)}
               />
             </div>
           </div>
