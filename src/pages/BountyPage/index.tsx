@@ -14,7 +14,9 @@ import { useRouter } from "~components/RouterOutlet";
 import { NotFound } from "~components/RouterOutlet/RouterOutlet";
 import { Skeleton } from "~components/Skeleton/Skeleton";
 import { getBounty, trackEvent } from "~utils/fetchers";
+import { getUserInfo } from "~utils/fetchers/get-user-info";
 
+import type { UserType } from "@ja-packages/types";
 import type { JrxBounty } from "@ja-packages/types/jarb";
 
 const DEFAULT_BACKGROUND_URL = "https://justabout.s3.eu-central-1.amazonaws.com/community/just_about_6e25e144d6.png";
@@ -36,6 +38,8 @@ export const BountyPage = ({ bountyID }: BountyPageProps) => {
   const [isError, setIsError] = useState<boolean>(false);
   const [isFetching, setIsFetching] = useState<boolean>(true);
   const [bounty, setBounty] = useState<ParsedJrxBounty>();
+  const [user, setUser] = useState<UserType | null>(null);
+  const [isBookmarked, setIsBookmarked] = useState<boolean>(false);
 
   const isLoading = useMemo(() => isFetching && !bounty, [isFetching, bounty]);
 
@@ -49,9 +53,23 @@ export const BountyPage = ({ bountyID }: BountyPageProps) => {
       .finally(() => setIsFetching(false));
   }, [setIsError, setIsFetching, setBounty]);
 
+  const loadUser = useCallback(async () => {
+    const userInfo = await getUserInfo();
+    if (!userInfo) {
+      setUser(null);
+      return;
+    }
+    setUser(userInfo.user);
+  }, [setUser]);
+
   useEffect(() => {
     loadBounty();
+    loadUser();
   }, [loadBounty]);
+
+  useEffect(() => {
+    setIsBookmarked(bounty?.isBookmarked || false);
+  }, [bounty]);
 
   const deadline = useMemo(() => {
     if (!bounty?.deadline) return "";
@@ -79,8 +97,6 @@ export const BountyPage = ({ bountyID }: BountyPageProps) => {
     });
     router.openExternalUrl(bounty.url);
   }, [router, bounty?.url]);
-
-  const [isBookmarked, setIsBookmarked] = useState(bounty?.isBookmarked || false);
 
   // For some reason, `capitalize` in the CSS is being overridden so it is capitalized using JS
   const preferredSubmissionType = useMemo(() => {
@@ -228,12 +244,14 @@ export const BountyPage = ({ bountyID }: BountyPageProps) => {
                 View rules
               </Button>
 
-              <BookmarkButton
-                communitySlug={bounty.community.slug}
-                postID={bounty.postID}
-                isBookmarked={isBookmarked}
-                onBookmark={() => setIsBookmarked(!isBookmarked)}
-              />
+              {user && (
+                <BookmarkButton
+                  communitySlug={bounty.community.slug}
+                  postID={bounty.postID}
+                  isBookmarked={isBookmarked}
+                  onBookmark={() => setIsBookmarked(!isBookmarked)}
+                />
+              )}
             </div>
           </div>
         )}
