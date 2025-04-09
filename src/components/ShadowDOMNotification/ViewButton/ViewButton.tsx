@@ -19,7 +19,7 @@ export const ViewButton = ({ handleClick }: ViewButtonProps) => (
     <span
       className={twMerge(
         "text-[#16151F]",
-        "text-xs font-['Basic Sans'] font-semibold",
+        "text-xs font-['BasicSans'] font-semibold",
         "flex gap-[6px] items-center justify-center"
       )}
     >

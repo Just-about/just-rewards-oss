@@ -37,7 +37,7 @@ export const Tabber = ({ tabs }: TabberProps) => {
               key={id}
             >
               <button
-                className={classNames("font-['Basic Sans'] text-base text-white leading-[120%] select-none", {
+                className={classNames("font-['BasicSans'] font-bold text-base text-white leading-[120%] select-none", {
                   "opacity-50": activeTabID !== id,
                 })}
                 onClick={() => setSelectedTabId(id)}

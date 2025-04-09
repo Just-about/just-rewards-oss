@@ -23,7 +23,7 @@ export const WelcomeMessage = () => {
 
   return (
     <div className="pt-2 px-5 pb-4 dark">
-      <h1 className="font-['Basic Sans'] font-bold text-3xl leading-[26px] -tracking-[2%] text-white mb-2">
+      <h1 className="font-['BasicSans'] font-bold text-3xl leading-[26px] -tracking-[2%] text-white mb-2">
         Discover rewards wherever you are
       </h1>
 

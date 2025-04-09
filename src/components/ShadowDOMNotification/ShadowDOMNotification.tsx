@@ -232,7 +232,7 @@ export const ShadowDOMNotification = ({ currentURL, openBountyDetails }: ShadowD
         <div className="flex flex-col relative">
           <div className="w-full pr-[24px]">
             <p className="text-xs mb-0 font-['SourceSans3'] opacity-60">{domain.replace(/^www\./, "")}</p>
-            <p className="text-base leading-[19px] font-['Basic Sans'] font-semibold mb-3">
+            <p className="text-base leading-[19px] font-['BasicSans'] font-semibold mb-3">
               {`$${rewardsAvailable} reward${bountyIDs.length > 1 ? "s" : ""} available`}
             </p>
           </div>

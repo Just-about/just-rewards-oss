@@ -15,7 +15,7 @@ export const NavigateHomeButton = ({ borderless = false }: NavigateHomeButtonPro
         {
           "border-b": !borderless,
         },
-        "flex items-center h-[42px] border-white/[0.2] text-[14px] text-neutral-400 z-20"
+        "flex items-center h-[42px] border-white/[0.2] text-base text-neutral-400 z-20"
       )}
     >
       <div
@@ -30,7 +30,7 @@ export const NavigateHomeButton = ({ borderless = false }: NavigateHomeButtonPro
         role="presentation"
       >
         <ArrowLeftIconSolid />
-        <span className="pl-1 cursor-pointer select-none font-['Basic Sans'] font-semibold">Back</span>
+        <span className="pl-1 cursor-pointer select-none font-['BasicSans'] font-semibold">Back</span>
       </div>
     </div>
   );

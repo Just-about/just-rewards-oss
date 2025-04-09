@@ -134,10 +134,10 @@ export const BountyPage = ({ bountyID }: BountyPageProps) => {
             )}
           >
             <p className="text-right">
-              <span className="text-3xl tracking-[-0.02em] font-bold font-['Basic Sans'] leading-[90%] text-[#F8B820] mr-xxxxs">
+              <span className="text-3xl tracking-[-0.02em] font-bold font-['BasicSans'] leading-[90%] text-[#F8B820] mr-xxxxs">
                 $
               </span>
-              <span className="text-3xl tracking-[-0.02em] font-bold font-['Basic Sans'] leading-[90%] text-white">
+              <span className="text-3xl tracking-[-0.02em] font-bold font-['BasicSans'] leading-[90%] text-white">
                 {formatCurrency(bounty?.maxReward, {
                   removeDecimalsWhenInteger: true,
                 })}
@@ -155,13 +155,13 @@ export const BountyPage = ({ bountyID }: BountyPageProps) => {
         style={{ zIndex: Z_INDEXES.JRX_BOUNTY_PAGE_CONTENT }}
       >
         <div className="p-lg">
-          <div className="mb-xs">
+          <div className="mb-xxs">
             {isLoading ? (
               <Skeleton className="h-8 w-40" />
             ) : (
               <span
                 className={classNames(
-                  "text-white text-3xl leading-[25.6px] font-['Basic Sans'] font-bold tracking-[-0.02em]",
+                  "text-white text-3xl leading-[80%] font-['BasicSans'] font-bold tracking-[-0.02em]",
 
                   "fade-in-animation"
                 )}
@@ -182,19 +182,24 @@ export const BountyPage = ({ bountyID }: BountyPageProps) => {
                 <Skeleton className="h-[20px] w-56" />
               </div>
             ) : (
-              <span className={classNames("text-base leading-[19.2px] text-neutral-400", "fade-in-animation")}>
+              <span
+                className={classNames(
+                  "text-base leading-[19.2px] text-neutral-400 font-['SourceSans3']",
+                  "fade-in-animation"
+                )}
+              >
                 {bounty?.description}
               </span>
             )}
           </div>
 
           {bounty && (
-            <div className="overflow-auto">
+            <div>
               <div className="mb-xxxs">
                 <span
                   className={classNames(
                     "rounded-xxxs py-min px-xxxxs  mr-xxxs bg-primary-600 bg-opacity-[0.16]",
-                    "text-sm text-neutral-400 leading-[16.8px]"
+                    "select-none text-sm text-neutral-400 leading-[16.8px] font-['SourceSans3']"
                   )}
                 >
                   {bounty.community.name}
@@ -202,14 +207,14 @@ export const BountyPage = ({ bountyID }: BountyPageProps) => {
                 <span
                   className={classNames(
                     "rounded-xxxs py-min px-xxxxs bg-white/[0.08]",
-                    "text-sm text-neutral-400 leading-[16.8px]"
+                    "select-none text-sm text-neutral-400 leading-[16.8px] font-['SourceSans3']"
                   )}
                 >
                   {preferredSubmissionType}
                 </span>
               </div>
               <div className="px-min">
-                <span className="text-min leading-[14.4px] text-neutral-400">
+                <span className="text-min leading-[14.4px] text-neutral-400 font-['SourceSans3']">
                   {deadline ? `Closes ${deadline}` : "Closed"}
                 </span>
               </div>
@@ -218,10 +223,8 @@ export const BountyPage = ({ bountyID }: BountyPageProps) => {
         </div>
 
         {bounty && (
-          <div className="flex flex-col mt-auto">
-            <div
-              className={classNames("flex row gap-2 items-end h-full px-lg pt-xxxxs pb-[23px]", "fade-in-animation")}
-            >
+          <div className="mt-auto">
+            <div className={classNames("flex row gap-2 px-lg", "fade-in-animation")}>
               <Button
                 color="purple"
                 onClick={() => {
@@ -253,6 +256,7 @@ export const BountyPage = ({ bountyID }: BountyPageProps) => {
                 />
               )}
             </div>
+            <div className="h-[20px]" />
           </div>
         )}
       </div>

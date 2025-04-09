@@ -95,7 +95,7 @@ export const Button = ({
           className={twMerge(
             colors[color].text,
             dimensions[size].text,
-            "font-semibold flex gap-2 items-center justify-center font-display"
+            "font-semibold flex gap-2 items-center justify-center font-['Poppins']"
           )}
         >
           {IconLeft && <IconLeft className={classNames("transition-colors", colors[color].icon)} />}

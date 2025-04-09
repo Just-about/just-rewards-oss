@@ -149,7 +149,7 @@ export const UserInfo = ({ className }: UserInfoProps) => {
                   style={{ backgroundColor: avatarColors?.background }}
                 >
                   <span
-                    className={classNames("font-['Basic Sans'] font-bold m-auto text-center brightness-75 text-base")}
+                    className={classNames("font-['BasicSans'] font-bold m-auto text-center brightness-75 text-base")}
                     style={{ color: avatarColors?.foreground }}
                   >
                     {initials}
@@ -157,10 +157,12 @@ export const UserInfo = ({ className }: UserInfoProps) => {
                 </div>
               )}
               <div className="pl-3">
-                <p className="font-['Basic Sans'] text-lg font-bold text-white mb-0 leading-tight w-[150px] truncate">
+                <p className="font-['BasicSans'] text-lg font-bold text-white mb-0 leading-tight w-[150px] truncate">
                   {user.displayName}
                 </p>
-                <p className="text-sm text-white/[0.6] mb-0 leading-[130%] w-[150px] truncate">@{user.username}</p>
+                <p className="text-sm text-white/[0.6] mb-0 leading-[130%] w-[150px] truncate font-['BasicSans']">
+                  @{user.username}
+                </p>
               </div>
             </div>
           </div>
@@ -173,8 +175,8 @@ export const UserInfo = ({ className }: UserInfoProps) => {
           >
             <p className="text-min text-right text-white/[0.6] leading-[130%]">My balance</p>
             <p className="text-right">
-              <span className="text-2xl leading-tight font-['Basic Sans'] font-bold text-caution-300">$</span>
-              <span className="text-2xl leading-tight font-['Basic Sans'] font-bold text-white">{balance || 0}</span>
+              <span className="text-2xl leading-tight font-['BasicSans'] font-bold text-caution-300">$</span>
+              <span className="text-2xl leading-tight font-['BasicSans'] font-bold text-white">{balance || 0}</span>
             </p>
           </div>
         </>

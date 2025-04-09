@@ -9,7 +9,7 @@ interface ErrorPageProps {
 export const ErrorPage = ({ onRetry }: ErrorPageProps) => {
   return (
     <div className="flex flex-col gap-xs h-[468px] items-center justify-center">
-      <p className="text-center font-['Basic Sans'] font-bold text-3xl text-neutral-50 leading-[80%]">Hmmm...</p>
+      <p className="text-center font-['BasicSans'] font-bold text-3xl text-neutral-50 leading-[80%]">Hmmm...</p>
       <p className="text-center font-['SourceSans3'] text-base text-neutral-400 leading-[120%]">
         Something isn&apos;t right
       </p>

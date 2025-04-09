@@ -16,7 +16,7 @@ export interface BountyListItemProps {
   className?: string | object;
 }
 
-const tagClass = "text-sm text-neutral-400 py-min px-xxxxs rounded-xxxs";
+const tagClass = "text-sm text-neutral-400 py-min px-xxxxs rounded-xxxs font-['SourceSans3']";
 
 export const BountyListItem = ({
   communityName,
@@ -51,10 +51,10 @@ export const BountyListItem = ({
       onClick={handleClick}
     >
       <div>
-        <p className="text-white font-['Basic Sans'] font-bold text-xl leading-tight mb-[8px] pr-2">{title}</p>
+        <p className="text-white font-['BasicSans'] font-bold text-xl leading-[90%] mb-[8px] pr-2">{title}</p>
 
-        <div className="flex gap-xl">
-          <p className={classNames(tagClass, "bg-purple-600/[0.20]")}>{communityName}</p>
+        <div className="flex gap-[10px]">
+          <p className={classNames(tagClass, "bg-[#8A30F4]/[0.16]")}>{communityName}</p>
           <p className={classNames(tagClass, "bg-white/[0.08] capitalize")}>{submissionType}</p>
         </div>
       </div>
@@ -66,10 +66,10 @@ export const BountyListItem = ({
           "flex items-center h-[44px] min-w-[75px] px-3.5 pr-2 bg-neutral-900 rounded-l-md ml-2"
         )}
       >
-        <p className="text-left mt-[5px]">
-          <span className="text-2xl leading-[100%] font-['Basic Sans'] text-caution-300 font-semibold">$</span>
+        <p className="text-left">
+          <span className="text-2xl leading-[100%] font-['BasicSans'] text-caution-300 font-semibold">$</span>
 
-          <span className="text-2xl leading-[100%] font-['Basic Sans'] font-semibold text-white">{reward}</span>
+          <span className="text-2xl leading-[100%] font-['BasicSans'] font-semibold text-white">{reward}</span>
         </p>
       </div>
     </button>

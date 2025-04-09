@@ -16,7 +16,7 @@ export const DismissButton = ({ handleClick, lifetime }: DismissButtonProps) => 
     type="button"
   >
     <span
-      className={twMerge("text-white", "text-xs font-['Basic Sans'] font-semibold", "flex items-center justify-center")}
+      className={twMerge("text-white", "text-xs font-['BasicSans'] font-semibold", "flex items-center justify-center")}
     >
       Dismiss <span className="font-light font-['SourceCode']">({lifetime})</span>
     </span>

@@ -35,7 +35,7 @@ export const BountyList = ({ items, className }: BountyListProps) => {
           className
         )}
       >
-        <p className="text-neutral-400">
+        <p className="text-neutral-400 font-['SourceSans3']">
           There’s a world of opportunities
           <br /> available at{" "}
           <a href="https://justabout.com" className="underline">

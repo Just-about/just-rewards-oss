@@ -89,7 +89,7 @@ export const BountyListPage = ({ bountyIDs }: BountyListPageProps) => {
       {!isLoading && (
         <div className="fade-in-animation">
           <div className="px-5 flex flex-row items-center w-full">
-            <span className="shrink-1 grow-0 pr-2 select-none font-['Poppins'] text-[12px] text-white/[0.4]">
+            <span className="shrink-1 grow-0 pr-2 select-none font-['BasicSans'] text-[12px] text-white/[0.4]">
               More available rewards
             </span>
             <div className="border-t border-white/[0.2] flex-1" />
@@ -124,7 +124,7 @@ export const BountyListPage = ({ bountyIDs }: BountyListPageProps) => {
             <span
               className={classNames(
                 "text-sm text-white leading-[18px]",
-                "font-['Basic Sans'] flex gap-2 items-center justify-center"
+                "font-['Poppins'] flex gap-2 items-center justify-center"
               )}
             >
               <ArrowUpRightFromSquareIconSolid />
